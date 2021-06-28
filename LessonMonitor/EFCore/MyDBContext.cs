@@ -22,6 +22,4 @@ namespace EFCore
             base.OnModelCreating(modelBuilder);
         }
     }
-
- 
 }

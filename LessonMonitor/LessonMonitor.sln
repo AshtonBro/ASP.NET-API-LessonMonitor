@@ -4,8 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 <<<<<<< HEAD
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "LessonMonitor.SqlScripts", "LessonMonitor.SqlScripts\LessonMonitor.SqlScripts.sqlproj", "{BBA3C70D-099D-4B95-9A31-AA9EF46B0F46}"
-=======
+
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LessonMonitor.API", "LessonMonitor.API\LessonMonitor.API.csproj", "{EA6CB1D9-B6B7-49E1-AF70-A94EA8325F18}"
 	ProjectSection(ProjectDependencies) = postProject
 		{58B37F66-4379-4468-9416-963CA2F5940C} = {58B37F66-4379-4468-9416-963CA2F5940C}
@@ -31,8 +30,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LessonMonitor.BussinesLogic.NTests", "LessonMonitor.BussinesLogic.NTests\LessonMonitor.BussinesLogic.NTests.csproj", "{C477E6B3-6314-497F-A347-B6E07CE48B9A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LessonMonitor.BussinesLogic.XTests", "LessonMonitor.BussinesLogic.XTests\LessonMonitor.BussinesLogic.XTests.csproj", "{DD4D4DB0-5684-4268-8BE5-69E4A6D76CE9}"
-EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "LessonMonitor.SqlScripts", "LessonMonitor.SqlScripts\LessonMonitor.SqlScripts.sqlproj", "{BBA3C70D-099D-4B95-9A31-AA9EF46B0F46}"
+
 >>>>>>> origin/develop
 EndProject
 Global
@@ -42,13 +40,7 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 <<<<<<< HEAD
-		{BBA3C70D-099D-4B95-9A31-AA9EF46B0F46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BBA3C70D-099D-4B95-9A31-AA9EF46B0F46}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BBA3C70D-099D-4B95-9A31-AA9EF46B0F46}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{BBA3C70D-099D-4B95-9A31-AA9EF46B0F46}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BBA3C70D-099D-4B95-9A31-AA9EF46B0F46}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BBA3C70D-099D-4B95-9A31-AA9EF46B0F46}.Release|Any CPU.Deploy.0 = Release|Any CPU
-=======
+		
 		{EA6CB1D9-B6B7-49E1-AF70-A94EA8325F18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EA6CB1D9-B6B7-49E1-AF70-A94EA8325F18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA6CB1D9-B6B7-49E1-AF70-A94EA8325F18}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -94,12 +86,6 @@ Global
 		{DD4D4DB0-5684-4268-8BE5-69E4A6D76CE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD4D4DB0-5684-4268-8BE5-69E4A6D76CE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD4D4DB0-5684-4268-8BE5-69E4A6D76CE9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BBA3C70D-099D-4B95-9A31-AA9EF46B0F46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BBA3C70D-099D-4B95-9A31-AA9EF46B0F46}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BBA3C70D-099D-4B95-9A31-AA9EF46B0F46}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{BBA3C70D-099D-4B95-9A31-AA9EF46B0F46}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BBA3C70D-099D-4B95-9A31-AA9EF46B0F46}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BBA3C70D-099D-4B95-9A31-AA9EF46B0F46}.Release|Any CPU.Deploy.0 = Release|Any CPU
 >>>>>>> origin/develop
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

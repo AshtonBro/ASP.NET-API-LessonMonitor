@@ -3000,3 +3000,78 @@
     "successful": "Homework updated: id 62"
   }
 },
+{
+  "ControllerName": "Homework",
+  "ActionName": "Create",
+  "Response": {
+    "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+    "title": "One or more validation errors occurred.",
+    "status": 400,
+    "traceId": "00-e3fc3a294a55fe47a87ba0bd3e20fb8d-efacdb3f64c6204b-00",
+    "errors": {
+      "Link": [
+        "Entry should not contain url."
+      ]
+    }
+  }
+},
+{
+  "ControllerName": "Homework",
+  "ActionName": "Create",
+  "Response": {
+    "successful": "Homework created: id 63"
+  }
+},
+{
+  "ControllerName": "Homework",
+  "ActionName": "Delete",
+  "Response": {
+    "successful": "Homework is deleted"
+  }
+},
+{
+  "ControllerName": "Homework",
+  "ActionName": "Get",
+  "Response": {
+    "id": 63,
+    "title": "MSSQL",
+    "description": "QYY",
+    "link": "https://account.skrill.com/",
+    "lessonId": 1,
+    "memberId": 0,
+    "mentorId": 0
+  }
+},
+{
+  "ControllerName": "Homework",
+  "ActionName": "Get",
+  "Response": [
+    {
+      "id": 60,
+      "title": "ASPNET",
+      "description": "Domashaka po EF",
+      "link": "https://www.youtube.com/watch?v=EplPCf9AL9Q&ab_channel=RomanTrufanov",
+      "lessonId": 0,
+      "memberId": 0,
+      "mentorId": 0
+    },
+    {
+      "id": 61,
+      "title": "ASPNET",
+      "description": "Another one po EF",
+      "link": "https://www.youtube.com/watch?v=EplPCf9AL9Q&ab_channel=RomanTrufanov",
+      "lessonId": 0,
+      "memberId": 0,
+      "mentorId": 0
+    },
+    {
+      "id": 63,
+      "title": "MSSQL",
+      "description": "QYY",
+      "link": "https://account.skrill.com/",
+      "lessonId": 0,
+      "memberId": 0,
+      "mentorId": 0
+    }
+  ]
+},

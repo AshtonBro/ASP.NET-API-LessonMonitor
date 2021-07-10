@@ -89,12 +89,13 @@ namespace LessonMonitor.API.Controllers
             {
                 foreach (var homework in homeworks)
                 {
-                    homeworkModels.Add(new Homework 
+                    homeworkModels.Add(new Homework
                     {
                         Id = homework.Id,
                         Title = homework.Title,
                         Description = homework.Description,
-                        Link = homework.Link
+                        Link = homework.Link,
+                        LessonId = homework.LessonId
                     });
                 }
                 return homeworkModels.ToArray();
@@ -109,7 +110,7 @@ namespace LessonMonitor.API.Controllers
         public async Task<ActionResult> Update(Homework request)
         {
             var homework = new Core.CoreModels.Homework
-            { 
+            {
                 Id = request.Id,
                 Title = request.Title,
                 Description = request.Description,

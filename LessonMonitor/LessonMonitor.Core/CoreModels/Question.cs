@@ -6,7 +6,6 @@ namespace LessonMonitor.Core.CoreModels
     {
         public int Id { get; set; }
         public string Description { get; set; }
-        [InnerJoin]
-        public User User { get; set; }
+        public int MemberId { get; set; }
     }
 }

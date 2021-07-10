@@ -1,233 +1,320 @@
-﻿using System;
-using LessonMonitor.Core.CoreModels;
-using LessonMonitor.Core.Helper;
-using LessonMonitor.Core.Repositories;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿//using System;
+//using LessonMonitor.Core.Repositories;
+//using System.Collections.Generic;
+//using Microsoft.EntityFrameworkCore;
+//using System.Threading.Tasks;
+//using System.Linq;
+//using LessonMonitor.DataAccess.Entities;
 
-namespace LessonMonitor.DataAccess.Repositories
-{
-    public class HomeworksRepository : IHomeworksRepository
-	{
-		private string _connectionString;
-		public HomeworksRepository(string connectionString)
-		{
-			_connectionString = connectionString;
-		}
+//namespace LessonMonitor.DataAccess.Repositories
+//{
+//    public class HomeworksRepository : IHomeworksRepository
+//    {
+//        public HomeworksRepository()
+//        {
 
-		public int Add(Homework newHomework)
-		{
-			if (newHomework is null)
-				throw new ArgumentNullException(nameof(newHomework));
+//        }
 
-			var newHomeworkEntity = new Entities.Homework
-			{
-				TopicId = newHomework.TopicId,
-				Name = newHomework.Name,
-				Link = newHomework.Link,
-				Grade = newHomework.Grade
-			};
+//        public async Task<int> Add(Core.CoreModels.Homework newHomework)
+//        {
+//            if (newHomework is null)
+//                throw new ArgumentNullException(nameof(newHomework));
 
-			using (var connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
+//            var newHomeworkEntity = new Entities.Homework
+//            {
+//                //TopicId = newHomework.TopicId,
+//                //Name = newHomework.Name,
+//                //Link = newHomework.Link,
+//                //Grade = newHomework.Grade
+//            };
 
-				var command = new SqlCommand(@"
-					INSERT INTO Homeworks (TopicId, Name, Link, Grade, CreatedDate, UpdatedDate)
-					VALUES (@TopicId, @Name, @Link, @Grade, @CreatedDate, @UpdatedDate);
-					SET @Id = scope_identity();",
-				connection);
+//            await using (var context = new LessonMonitorDbContext())
+//            {
+//                var result = await context.AddAsync(newHomeworkEntity);
 
-				command.Parameters.AddWithValue("@TopicId", newHomeworkEntity.TopicId);
-				command.Parameters.AddWithValue("@Name", newHomeworkEntity.Name);
-				command.Parameters.AddWithValue("@Link", newHomeworkEntity.Link);
-				command.Parameters.AddWithValue("@Grade", newHomeworkEntity.Grade);
-				command.Parameters.AddWithValue("@CreatedDate", newHomeworkEntity.CreatedDate);
-				command.Parameters.AddWithValue("@UpdatedDate", newHomeworkEntity.UpdatedDate);
+//                if (result.State == EntityState.Added)
+//                {
+//                    await context.SaveChangesAsync();
 
-				var resultParameter = new SqlParameter
-				{
-					Direction = System.Data.ParameterDirection.Output,
-					SqlDbType = System.Data.SqlDbType.Int,
-					ParameterName = "@Id"
-				};
+//                    return newHomeworkEntity.Id;
+//                }
+//                else
+//                {
+//                    throw new Exception("Model not added.");
+//                }
+//            }
+//        }
 
-				command.Parameters.Add(resultParameter);
+//        public async Task<bool> AddHomeworkComplited(int homeworkId, int userId)
+//        {
+//            if (homeworkId <= 0 || userId <= 0)
+//                return false;
 
-				command.ExecuteNonQuery();
+//            await using (var context = new LessonMonitorDbContext())
+//            {
+//                var userHomework = new UsersHomework
+//                {
+//                    UserId = userId,
+//                    HomeworkId = homeworkId,
+//                    CreatedDate = DateTime.Now
+//                };
 
-				if (command.Parameters["@Id"].Value is int homeworkId)
-				{
-					return homeworkId;
-				}
-				else
-				{
-					throw new InvalidOperationException($"value id cannot be converted: {command.Parameters["@Id"].Value}");
-				}
-			}
-		}
+//                var result = await context.UsersHomeworks.AddAsync(userHomework);
 
-		public void Delete(int homeworkId)
-		{
-			if (homeworkId <= 0)
-				throw new ArgumentException(nameof(homeworkId));
+//                if (result.State == EntityState.Added)
+//                {
+//                    await context.SaveChangesAsync();
 
-			using (var connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
+//                    return true;
+//                }
+//                else
+//                {
+//                    return false;
+//                }
+//            }
+//        }
 
-				var command = new SqlCommand(@"
-					UPDATE Homeworks
-					SET DeletedDate = @DeletedDate
-					WHERE Id = @Id",
-				connection);
+//        public async Task<bool> Delete(int homeworkId)
+//        {
+//            if (homeworkId <= 0)
+//                throw new ArgumentException(nameof(homeworkId));
 
-				command.Parameters.AddWithValue("@Id", homeworkId);
-				command.Parameters.AddWithValue("@DeletedDate", DateTime.Now);
+//            await using (var context = new LessonMonitorDbContext())
+//            {
+//                var homeworkExist = await context.Homeworks.SingleOrDefaultAsync(f => f.Id == homeworkId && f.DeletedDate == null);
 
-				command.ExecuteNonQuery();
-			}
-		}
-		public Homework Get(int homeworkId)
-		{
-			var homework = new Homework();
+//                if (homeworkExist != null)
+//                {
+//                    homeworkExist.DeletedDate = DateTime.Now;
 
-			using (var connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
+//                    context.Homeworks.Update(homeworkExist);
 
-				var command = new SqlCommand(@"
-						SELECT 
-						h.Id,
-						h.TopicId,
-						h.Name,
-						h.Link, 
-						h.Grade,
-						t.Id as ""Topic.Id"",
-						t.Theme as ""Topic.Theme"",
-						u.Id as ""User.Id"",
-						u.Name as ""User.Name"",
-						u.Nicknames as ""User.Nicknames"",
-						u.Email as ""User.Email""
-						FROM Homeworks h
-						INNER JOIN UsersHomeworks uh on h.Id = uh.HomeworkId
-						INNER JOIN Users u on uh.UserId = u.Id
-						INNER JOIN Topics t on h.TopicId = t.Id
-						WHERE h.DeletedDate IS NULL AND h.Id = @Id",
-				connection);
+//                    await context.SaveChangesAsync();
 
-				command.Parameters.AddWithValue("@Id", homeworkId);
+//                    return true;
+//                }
+//                else
+//                {
+//                    return false;
+//                }
+//            }
+//        }
 
-				var reader = command.ExecuteReader();
+//        public async Task<Core.CoreModels.Homework> Get(int homeworkId)
+//        {
+//            if (homeworkId <= 0)
+//                throw new ArgumentException(nameof(homeworkId));
 
-				if (reader.HasRows)
-				{
-					while (reader.Read())
-					{
-						homework = ModelMapper.CreateOf<Homework>(reader);
-					}
-				}
-			}
+//            await using (var context = new LessonMonitorDbContext())
+//            {
+//                var homeworkExist = await context.Homeworks.SingleOrDefaultAsync(f => f.Id == homeworkId && f.DeletedDate == null);
 
-			return homework;
-		}
+//                if (homeworkExist != null)
+//                {
+//                    return new Core.CoreModels.Homework
+//                    {
+//                        //Id = homeworkExist.Id,
+//                        //TopicId = homeworkExist.TopicId,
+//                        //Name = homeworkExist.Name,
+//                        //Link = homeworkExist.Link,
+//                        //Grade = homeworkExist.Grade
+//                    };
+//                }
+//                else
+//                {
+//                    return null;
+//                }
+//            }
+//        }
 
-		public Homework[] Get()
-		{
-			var homeworks = new List<Homework>();
+//        public async Task<Core.CoreModels.Homework[]> Get()
+//        {
+//            await using (var context = new LessonMonitorDbContext())
+//            {
+//                var homeworks = await context.Homeworks.Where(f => f.DeletedDate == null).ToArrayAsync();
 
-			using (var connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
+//                var coreHomeworks = new List<Core.CoreModels.Homework>();
 
-				var command = new SqlCommand(@"
-						SELECT 
-						h.Id,
-						h.TopicId,
-						h.Name,
-						h.Link, 
-						h.Grade,
-						t.Id as ""Topic.Id"",
-						t.Theme as ""Topic.Theme"",
-						u.Id as ""User.Id"",
-						u.Name as ""User.Name"",
-						u.Nicknames as ""User.Nicknames"",
-						u.Email as ""User.Email""
-						FROM Homeworks h
-						INNER JOIN UsersHomeworks uh on h.Id = uh.HomeworkId
-						INNER JOIN Users u on uh.UserId = u.Id
-						INNER JOIN Topics t on h.TopicId = t.Id
-						WHERE h.DeletedDate IS NULL",
-				connection);
+//                if (homeworks.Length != 0 || homeworks is null)
+//                {
+//                    foreach (var homework in homeworks)
+//                    {
+//                        var coreHomework = new Core.CoreModels.Homework
+//                        {
+//                            //Id = homework.Id,
+//                            //TopicId = homework.TopicId,
+//                            //Name = homework.Name,
+//                            //Link = homework.Link,
+//                            //Grade = homework.Grade
+//                        };
 
-				var reader = command.ExecuteReader();
+//                        coreHomeworks.Add(coreHomework);
+//                    };
 
-				if (reader.HasRows)
-				{
-					while (reader.Read())
-					{
-						homeworks.Add(ModelMapper.CreateOf<Homework>(reader));
-					}
-				}
-			}
+//                    if (coreHomeworks.Count > 0)
+//                    {
+//                        return coreHomeworks.ToArray();
+//                    }
+//                    else
+//                    {
+//                        throw new ArgumentNullException(nameof(coreHomeworks));
+//                    }
+//                }
+//                else
+//                {
+//                    return null;
+//                }
+//            }
+//        }
 
-			return homeworks.ToArray();
-		}
+//        public async Task<Core.CoreModels.Homework> GetFullEntities(int homeworkId)
+//        {
+//            if (homeworkId <= 0)
+//                throw new ArgumentException(nameof(homeworkId));
 
+//            await using (var context = new LessonMonitorDbContext())
+//            {
+//                var homeworks = await context.Homeworks
+//                    .AsNoTracking()
+//                    .Join(
+//                    context.Topics,
+//                    homework => homework.TopicId,
+//                    topic => topic.Id,
+//                    (homework, topic) => new { homework, topic }
+//                    )
+//                    .Where(f => f.homework.DeletedDate == null)
+//                    .Join(
+//                    context.UsersHomeworks,
+//                    twoEntry => twoEntry.homework.Id,
+//                    usersHomeworks => usersHomeworks.HomeworkId,
+//                    (twoEntry, usersHomeworks) => new { twoEntry, usersHomeworks }
+//                    )
+//                    .Join(
+//                    context.Users,
+//                    threeEntry => threeEntry.usersHomeworks.UserId,
+//                    user => user.Id,
+//                    (threeEntry, user) => new Core.CoreModels.Homework
+//                    {
+//                        //Id = threeEntry.twoEntry.homework.Id,
+//                        //TopicId = threeEntry.twoEntry.homework.TopicId,
+//                        //Name = threeEntry.twoEntry.homework.Name,
+//                        //Link = threeEntry.twoEntry.homework.Link,
+//                        //Grade = threeEntry.twoEntry.homework.Grade,
+//                        //Topic = new Core.CoreModels.Topic
+//                        //{
+//                        //    Id = threeEntry.twoEntry.topic.Id,
+//                        //    Theme = threeEntry.twoEntry.topic.Theme
+//                        //},
+//                        //User = new Core.CoreModels.User
+//                        //{
+//                        //    Id = user.Id,
+//                        //    Name = user.Name,
+//                        //    Nicknames = user.Nicknames,
+//                        //    Email = user.Email
+//                        //}
+//                    }
+//                    )
+//                    .ToArrayAsync();
 
-		public void Update(Homework homework)
-		{
-			if (homework is null)
-				throw new ArgumentNullException(nameof(homework));
+//                if (homeworks.Length != 0 || homeworks is null)
+//                {
+//                    var homework = homeworks.SingleOrDefault(f => f.Id == homeworkId);
 
-			var updatedHomeworkEntity = new Entities.Homework
-			{
-				Id = homework.Id,
-				TopicId = homework.TopicId,
-				Name = homework.Name,
-				Link = homework.Link,
-				Grade = homework.Grade
-			};
+//                    if (homework != null)
+//                    {
+//                        return homework;
+//                    }
+//                    else
+//                    {
+//                        throw new ArgumentNullException(nameof(homework));
+//                    }
+//                }
+//                else
+//                {
+//                    return null;
+//                }
+//            }
+//        }
 
-			using (var connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
+//        public async Task<Core.CoreModels.Homework[]> GetFullEntities()
+//        {
+//            await using (var context = new LessonMonitorDbContext())
+//            {
+//                var homeworks = await context.Homeworks
+//                    .AsNoTracking()
+//                    .Join(
+//                    context.Topics,
+//                    homework => homework.TopicId,
+//                    topic => topic.Id,
+//                    (homework, topic) => new { homework, topic }
+//                    )
+//                    .Where(f => f.homework.DeletedDate == null)
+//                    .Join(
+//                    context.UsersHomeworks,
+//                    twoEntry => twoEntry.homework.Id,
+//                    usersHomeworks => usersHomeworks.HomeworkId,
+//                    (twoEntry, usersHomeworks) => new { twoEntry, usersHomeworks }
+//                    )
+//                    .Join(
+//                    context.Users,
+//                    threeEntry => threeEntry.usersHomeworks.UserId,
+//                    user => user.Id,
+//                    (threeEntry, user) => new Core.CoreModels.Homework
+//                    {
+//                        //Id = threeEntry.twoEntry.homework.Id,
+//                        //TopicId = threeEntry.twoEntry.homework.TopicId,
+//                        //Name = threeEntry.twoEntry.homework.Name,
+//                        //Link = threeEntry.twoEntry.homework.Link,
+//                        //Grade = threeEntry.twoEntry.homework.Grade,
+//                        //Topic = new Core.CoreModels.Topic
+//                        //{
+//                        //    Id = threeEntry.twoEntry.topic.Id,
+//                        //    Theme = threeEntry.twoEntry.topic.Theme
+//                        //},
+//                        //User = new Core.CoreModels.User
+//                        //{
+//                        //    Id = user.Id,
+//                        //    Name = user.Name,
+//                        //    Nicknames = user.Nicknames,
+//                        //    Email = user.Email
+//                        //}
+//                    }
+//                    ).ToArrayAsync();
 
-				var command = new SqlCommand(@"
-					UPDATE Homeworks
-					SET 
-						TopicId = @TopicId,
-						Name = @Name, 
-						Link = @Link,
-						Grade = @Grade, 
-						UpdatedDate = @UpdatedDate
-					WHERE Id = @Id",
-				connection);
+//                if (homeworks.Length != 0 || homeworks is null)
+//                {
+//                    return homeworks;
+//                }
+//                else
+//                {
+//                    return null;
+//                }
+//            }
+//        }
 
-                command.Parameters.AddWithValue("@Id", updatedHomeworkEntity.Id);
-                command.Parameters.AddWithValue("@TopicId", updatedHomeworkEntity.TopicId);
-                command.Parameters.AddWithValue("@Name", updatedHomeworkEntity.Name);
-                command.Parameters.AddWithValue("@Link", updatedHomeworkEntity.Link);
-                command.Parameters.AddWithValue("@Grade", updatedHomeworkEntity.Grade);
-                command.Parameters.AddWithValue("@UpdatedDate", updatedHomeworkEntity.UpdatedDate);
+//        public async Task<int> Update(Core.CoreModels.Homework homework)
+//        {
+//            if (homework is null)
+//                throw new ArgumentNullException(nameof(homework));
 
-                command.ExecuteNonQuery();
-			}
-		}
+//            await using (var context = new LessonMonitorDbContext())
+//            {
+//                var updatedHomeworkEntity = new Entities.Homework
+//                {
+//                    //Id = homework.Id,
+//                    //TopicId = homework.TopicId,
+//                    //Name = homework.Name,
+//                    //Link = homework.Link,
+//                    //Grade = homework.Grade,
+//                    //UpdatedDate = DateTime.Now
+//                };
 
-		public void CleanTable()
-		{
-			using (var connection = new SqlConnection(_connectionString))
-			{
-				connection.Open();
+//                context.Homeworks.Update(updatedHomeworkEntity);
 
-				var command = new SqlCommand(@"
-					DELETE FROM Homeworks
-					WHERE Id NOT IN (SELECT TOP 10 Id FROM Homeworks)",
-				connection);
+//                await context.SaveChangesAsync();
 
-				command.ExecuteNonQuery();
-			}
-		}
-	}
-}
+//                return updatedHomeworkEntity.Id;
+//            }
+//        }
+//    }
+//}

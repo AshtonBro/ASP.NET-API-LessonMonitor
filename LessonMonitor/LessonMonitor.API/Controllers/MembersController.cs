@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LessonMonitor.API.Contracts;
+using System.Net;
 
 namespace LessonMonitor.API.Controllers
 {
@@ -23,7 +24,8 @@ namespace LessonMonitor.API.Controllers
         {
             var member = new Core.CoreModels.Member
             {
-                Name = request.Name
+                Name = request.Name,
+                YouTubeAccountId = request.YouTubeUserId
             };
 
             var memberId = await _membersService.Create(member);
@@ -54,17 +56,18 @@ namespace LessonMonitor.API.Controllers
         }
 
         [HttpGet("GetMemberById")]
+        [ProducesResponseType(typeof(Member), (int)HttpStatusCode.OK)]
         public async Task<Member> Get(int memberId)
         {
             var member = await _membersService.Get(memberId);
 
             if (member is not null)
             {
-                return new Member
+                return new Contracts.Member
                 {
                     Id = member.Id,
                     Name = member.Name,
-                    GitHubAccountId = member.GitHubAccountId
+                    YouTubeAccountId = member.YouTubeAccountId
                 };
             }
             else
@@ -74,7 +77,8 @@ namespace LessonMonitor.API.Controllers
         }
 
         [HttpGet("GetAllMembers")]
-        public async Task<Member[]> Get()
+        [ProducesResponseType(typeof(Member[]), (int)HttpStatusCode.OK)]
+        public async Task<Contracts.Member[]> Get()
         {
             var memberModels = new List<Member>();
 
@@ -88,7 +92,7 @@ namespace LessonMonitor.API.Controllers
                     {
                         Id = member.Id,
                         Name = member.Name,
-                        GitHubAccountId = member.GitHubAccountId
+                        YouTubeAccountId = member.YouTubeAccountId
                     });
                 }
                 return memberModels.ToArray();
@@ -106,7 +110,7 @@ namespace LessonMonitor.API.Controllers
             {
                 Id = request.Id,
                 Name = request.Name,
-                GitHubAccountId = request.GitHubAccountId
+                YouTubeAccountId = request.YouTubeAccountId
             };
 
             var memberId = await _membersService.Update(member);

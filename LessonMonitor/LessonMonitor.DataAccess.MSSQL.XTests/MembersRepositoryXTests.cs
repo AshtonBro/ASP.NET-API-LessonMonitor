@@ -55,7 +55,7 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
             // assert
             Assert.Equal(memberkId, updatedMemberGet.Id);
             Assert.NotEqual(updatedMemberGet.Name, member.Name);
-            Assert.NotEqual(updatedMemberGet.GitHubAccountId, member.GitHubAccountId);
+            Assert.NotEqual(updatedMemberGet.YouTubeAccountId, member.YouTubeAccountId);
         }
 
         [Fact]

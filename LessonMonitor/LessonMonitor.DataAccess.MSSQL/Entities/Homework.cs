@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LessonMonitor.DataAccess.MSSQL.Entities
 {
@@ -9,5 +10,6 @@ namespace LessonMonitor.DataAccess.MSSQL.Entities
         public Uri Link { get; set; }
         public int LessonId { get; set; }
         public Lesson Lesson { get; set; }
+        public ICollection<Member> Members { get; set; }
     }
 }

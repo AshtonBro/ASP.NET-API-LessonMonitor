@@ -1,4 +1,5 @@
-﻿using LessonMonitor.Core.CoreModels;
+﻿using LessonMonitor.BussinesLogic.Validators;
+using LessonMonitor.Core.CoreModels;
 using LessonMonitor.Core.Exceprions;
 using LessonMonitor.Core.Repositories;
 using LessonMonitor.Core.Services;
@@ -20,11 +21,21 @@ namespace LessonMonitor.BussinesLogic
 
         public async Task<int> Create(Member member)
         {
-            if (member is null) throw new ArgumentNullException(nameof(member));
+            var validator = new MemberValidator();
+            var validatorResult = await validator.ValidateAsync(member);
 
-            var isInvalid = string.IsNullOrWhiteSpace(member.Name);
+            if (!validatorResult.IsValid)
+            {
+                var errros = validatorResult.ToString(", ");
 
-            if (isInvalid) throw new MemberException(MEMBER_IS_INVALID);
+                throw new InvalidOperationException(errros);
+            }
+
+            var exisredMember = await _membersRepository.Get(member.YouTubeAccountId);
+            if (exisredMember is not null)
+            {
+                throw new InvalidOperationException("Member already exists");
+            }
 
             var memberId = await _membersRepository.Add(member);
 

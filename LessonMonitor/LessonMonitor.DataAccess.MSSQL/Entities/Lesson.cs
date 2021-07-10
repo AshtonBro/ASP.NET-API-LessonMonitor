@@ -6,6 +6,7 @@ namespace LessonMonitor.DataAccess.MSSQL.Entities
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public ICollection<Homework> Homeworks { get; set; }
+        public int HomeworkId { get; set; }
+        public Homework Homework { get; set; }
     }
 }

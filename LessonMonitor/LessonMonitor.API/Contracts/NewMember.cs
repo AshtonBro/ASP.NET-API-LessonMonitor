@@ -9,5 +9,8 @@ namespace LessonMonitor.API.Contracts
         [RegularExpression(@"^[a-zA-Zа-яА-Яё0-9\s]+$", ErrorMessage = "Name contain special character or whitespace")]
         [DataType(DataType.Text)]
         public string Name { get; set; }
+
+        public string YouTubeUserId { get; set; }
+
     }
 }

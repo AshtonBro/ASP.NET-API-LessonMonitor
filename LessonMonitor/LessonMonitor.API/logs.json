@@ -3075,3 +3075,105 @@
     }
   ]
 },
+{
+  "ControllerName": "Members",
+  "ActionName": "Create",
+  "Response": {
+    "successful": "Member created: id 1"
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Create",
+  "Response": {
+    "successful": "Member created: id 2"
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Create",
+  "Response": {
+    "successful": "Member created: id 3"
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Get",
+  "Response": {
+    "id": 1,
+    "name": "Roman",
+    "youTubeAccountId": "026f8e459c8f89ef75fa7a78265a0025"
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Get",
+  "Response": [
+    {
+      "id": 1,
+      "name": "Roman",
+      "youTubeAccountId": "026f8e459c8f89ef75fa7a78265a0025"
+    },
+    {
+      "id": 2,
+      "name": "Evgg",
+      "youTubeAccountId": "026f8e4229c8f89ef75fa7a78265a0025"
+    },
+    {
+      "id": 3,
+      "name": "Max",
+      "youTubeAccountId": "02629c8f89ef75fa7a78265a0025"
+    }
+  ]
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Delete",
+  "Response": {
+    "successful": "Member is deleted"
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Delete",
+  "Response": {
+    "error": "Member has already been deleted or not an invalid id"
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Get",
+  "Response": [
+    {
+      "id": 2,
+      "name": "Evgg",
+      "youTubeAccountId": "026f8e4229c8f89ef75fa7a78265a0025"
+    },
+    {
+      "id": 3,
+      "name": "Max",
+      "youTubeAccountId": "02629c8f89ef75fa7a78265a0025"
+    }
+  ]
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Update",
+  "Response": {
+    "successful": "Member updated: id 2"
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Update",
+  "Response": {
+    "successful": "Member updated: id 2"
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Update",
+  "Response": {
+    "successful": "Member updated: id 2"
+  }
+},

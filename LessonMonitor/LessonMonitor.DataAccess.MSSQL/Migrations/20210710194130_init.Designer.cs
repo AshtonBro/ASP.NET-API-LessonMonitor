@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LessonMonitor.DataAccess.MSSQL.Migrations
 {
     [DbContext(typeof(LMonitorDbContext))]
-    [Migration("20210707202049_CreateTablesMemberLessonGitHub")]
-    partial class CreateTablesMemberLessonGitHub
+    [Migration("20210710194130_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,18 +21,32 @@ namespace LessonMonitor.DataAccess.MSSQL.Migrations
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("HomeworkMember", b =>
+                {
+                    b.Property<int>("HomeworksId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MembersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("HomeworksId", "MembersId");
+
+                    b.HasIndex("MembersId");
+
+                    b.ToTable("HomeworkMember");
+                });
+
             modelBuilder.Entity("LessonMonitor.DataAccess.MSSQL.Entities.GitHubAccount", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("GitHubAccountId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Link")
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
-
-                    b.Property<int>("MemberId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -41,10 +55,7 @@ namespace LessonMonitor.DataAccess.MSSQL.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("MemberId")
-                        .IsUnique();
+                    b.HasKey("MemberId");
 
                     b.ToTable("GitHubAccounts");
                 });
@@ -134,9 +145,6 @@ namespace LessonMonitor.DataAccess.MSSQL.Migrations
                     b.Property<DateTime?>("DeletedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("GitHubAccountId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -144,9 +152,58 @@ namespace LessonMonitor.DataAccess.MSSQL.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("YouTubeAccountId")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Members");
+                });
+
+            modelBuilder.Entity("LessonMonitor.DataAccess.MSSQL.Entities.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<int>("MemberId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("HomeworkMember", b =>
+                {
+                    b.HasOne("LessonMonitor.DataAccess.MSSQL.Entities.Homework", null)
+                        .WithMany()
+                        .HasForeignKey("HomeworksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LessonMonitor.DataAccess.MSSQL.Entities.Member", null)
+                        .WithMany()
+                        .HasForeignKey("MembersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LessonMonitor.DataAccess.MSSQL.Entities.GitHubAccount", b =>
@@ -172,6 +229,17 @@ namespace LessonMonitor.DataAccess.MSSQL.Migrations
                     b.Navigation("Homework");
                 });
 
+            modelBuilder.Entity("LessonMonitor.DataAccess.MSSQL.Entities.Question", b =>
+                {
+                    b.HasOne("LessonMonitor.DataAccess.MSSQL.Entities.Member", "Member")
+                        .WithMany("Questions")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("LessonMonitor.DataAccess.MSSQL.Entities.Homework", b =>
                 {
                     b.Navigation("Lesson");
@@ -180,6 +248,8 @@ namespace LessonMonitor.DataAccess.MSSQL.Migrations
             modelBuilder.Entity("LessonMonitor.DataAccess.MSSQL.Entities.Member", b =>
                 {
                     b.Navigation("GitHubAccount");
+
+                    b.Navigation("Questions");
                 });
 #pragma warning restore 612, 618
         }

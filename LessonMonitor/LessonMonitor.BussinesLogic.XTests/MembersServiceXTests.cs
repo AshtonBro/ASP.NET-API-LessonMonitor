@@ -13,11 +13,13 @@ namespace LessonMonitor.BussinesLogic.XTests
 {
     public class MembersServiceXTests
     {
+        private readonly Fixture _fixture;
         private Mock<IMembersRepository> _membersRepositoryMock;
         private MembersService _service;
 
         public MembersServiceXTests()
         {
+            _fixture = new Fixture();
             _membersRepositoryMock = new Mock<IMembersRepository>();
             _service = new MembersService(_membersRepositoryMock.Object);
         }
@@ -26,19 +28,43 @@ namespace LessonMonitor.BussinesLogic.XTests
         public async Task Create_MemberIsValide_ShouldCreateNewMember()
         {
             // arrange
-            var fixture = new Fixture();
-            var expectedMemberId = fixture.Create<int>();
-            var member = fixture.Build<Member>().Create();
+            var expectedMemberId = _fixture.Create<int>();
 
-            _membersRepositoryMock.Setup(x => x.Add(member))
+            var member = _fixture.Build<Member>()
+                .Without(x => x.Id)
+                .Create();
+
+            _membersRepositoryMock
+                .Setup(x => x.Add(member))
                 .ReturnsAsync(expectedMemberId);
 
             // act
-            var result = await _service.Create(member);
+            var memberId = await _service.Create(member);
 
             // assert
-            result.Should().Be(expectedMemberId);
+            Assert.Equal(expectedMemberId, memberId);
+            _membersRepositoryMock.Verify(x => x.Get(member.YouTubeAccountId), Times.Once);
             _membersRepositoryMock.Verify(x => x.Add(member), Times.Once);
+        }
+
+        [Fact]
+        public async Task Create_MemberAlreadyExists_ShouldThrowInvalidaOperationException()
+        {
+            // arrange
+            var member = _fixture.Build<Member>()
+                .Without(x => x.Id)
+                .Create();
+
+            _membersRepositoryMock
+                .Setup(x => x.Get(member.YouTubeAccountId))
+                .ReturnsAsync(member);
+
+            // act
+            await Assert.ThrowsAsync<InvalidOperationException>(() => _service.Create(member));
+
+            // assert
+            _membersRepositoryMock.Verify(x => x.Get(member.YouTubeAccountId), Times.Once);
+            _membersRepositoryMock.Verify(x => x.Add(It.IsAny<Member>()), Times.Never);
         }
 
         [Fact]
@@ -55,25 +81,32 @@ namespace LessonMonitor.BussinesLogic.XTests
         }
 
         [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        public async Task Create_MemberIsInvalide_ShouldThrowBusinessExceprion(string name)
+        [InlineData(142, "test", "test")]
+        [InlineData(-53, "test", "test")]
+        [InlineData(0, null, "test")]
+        [InlineData(0, "", "test")]
+        [InlineData(0, " ", "test")]
+        [InlineData(0, "test", null)]
+        [InlineData(0, "test", "")]
+        [InlineData(0, "test", " ")]
+        [InlineData(0, null, null)]
+        [InlineData(0, "", "")]
+        [InlineData(53, " ", " ")]
+        [InlineData(0, null, " ")]
+        public async Task Create_InvalidMember_ShouldThrowArgumentNullException(int id, string name, string youTubeAccountId)
         {
             // arrange
-            var fixture = new Fixture();
-            var member = fixture.Build<Member>()
-                .Create();
-            member.Name = name;
+            var member = new Member
+            {
+                Id = id,
+                Name = name,
+                YouTubeAccountId = youTubeAccountId
+            };
 
             // act
-            var exceprtion = await Assert.ThrowsAsync<MemberException>(() => _service.Create(member));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => _service.Create(member));
 
             // assert
-            exceprtion.Should().NotBeNull()
-              .And
-              .Match<MemberException>(x => x.Message == MembersService.MEMBER_IS_INVALID);
-
             _membersRepositoryMock.Verify(x => x.Add(It.IsAny<Member>()), Times.Never);
         }
 
@@ -81,8 +114,7 @@ namespace LessonMonitor.BussinesLogic.XTests
         public async Task Delete_ShouldDeleteMember()
         {
             // arrange
-            var fixture = new Fixture();
-            var memberId = fixture.Create<int>();
+            var memberId = _fixture.Create<int>();
 
             //act
             var result = await _service.Delete(memberId);

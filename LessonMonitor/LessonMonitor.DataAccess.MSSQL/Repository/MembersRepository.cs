@@ -23,7 +23,7 @@ namespace LessonMonitor.DataAccess.MSSQL
             var newMemberEntity = new Entities.Member
             {
                 Name = newMember.Name,
-                GitHubAccountId = newMember.GitHubAccountId
+                YouTubeAccountId = newMember.YouTubeAccountId
             };
 
             var result = await _context.AddAsync(newMemberEntity);
@@ -76,7 +76,7 @@ namespace LessonMonitor.DataAccess.MSSQL
                 {
                     Id = memberExist.Id,
                     Name = memberExist.Name,
-                    GitHubAccountId = memberExist.GitHubAccountId
+                    YouTubeAccountId = memberExist.YouTubeAccountId
                 };
             }
             else
@@ -100,7 +100,7 @@ namespace LessonMonitor.DataAccess.MSSQL
                     {
                         Id = member.Id,
                         Name = member.Name,
-                        GitHubAccountId = member.GitHubAccountId
+                        YouTubeAccountId = member.YouTubeAccountId
                     });
                 };
 
@@ -129,12 +129,32 @@ namespace LessonMonitor.DataAccess.MSSQL
 
             memberEntity.Id = member.Id;
             memberEntity.Name = member.Name;
-            memberEntity.GitHubAccountId = member.GitHubAccountId;
+            memberEntity.YouTubeAccountId = member.YouTubeAccountId;
             memberEntity.UpdatedDate = DateTime.Now;
             
             await _context.SaveChangesAsync();
 
             return memberEntity.Id;
+        }
+
+        public async Task<Core.CoreModels.Member> Get(string youTubeUserId)
+        {
+            if (youTubeUserId is null)
+            {
+                throw new ArgumentNullException(nameof(youTubeUserId));
+            }
+
+            var members = await _context.Members
+                .AsNoTracking()
+                .Select(x => new Core.CoreModels.Member
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    YouTubeAccountId = x.YouTubeAccountId
+                })
+                .FirstOrDefaultAsync(x => x.YouTubeAccountId == youTubeUserId);
+
+            return members;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace LessonMonitor.DataAccess.MSSQL
         public DbSet<Homework> Homeworks { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<GitHubAccount> GitHubAccounts { get; set; }
-       // public DbSet<MemberHomework> MemberHomeworks { get; set; }
+        //public DbSet<MemberHomework> MemberHomeworks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

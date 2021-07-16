@@ -123,6 +123,7 @@ namespace LessonMonitor.DataAccess.MSSQL
                 return null;
             }
         }
+
         public async Task<int> Update(Core.CoreModels.Homework homework)
         {
             if (homework is null)

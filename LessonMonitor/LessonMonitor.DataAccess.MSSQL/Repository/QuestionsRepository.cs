@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;
 
-namespace LessonMonitor.DataAccess.MSSQL
+namespace LessonMonitor.DataAccess.MSSQL.Repository
 {
     public class QuestionsRepository : IQuestionsRepository
     {

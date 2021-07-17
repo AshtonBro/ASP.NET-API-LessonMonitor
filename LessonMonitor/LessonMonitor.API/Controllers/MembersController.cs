@@ -30,14 +30,10 @@ namespace LessonMonitor.API.Controllers
 
             var memberId = await _membersService.Create(member);
 
-            if (memberId != default)
-            {
-                return Ok(new { Successful = $"Member created: id {memberId}" });
-            }
-            else
-            {
-                return NotFound(new { Error = "Member is not created" });
-            }
+            if (memberId == default)
+                return BadRequest();
+
+            return Ok(new CreatedMember { MemberId = memberId });
         }
 
         [HttpDelete]

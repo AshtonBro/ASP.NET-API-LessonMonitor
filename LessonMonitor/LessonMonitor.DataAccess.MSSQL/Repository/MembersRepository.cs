@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;
 
-namespace LessonMonitor.DataAccess.MSSQL
+namespace LessonMonitor.DataAccess.MSSQL.Repository
 {
     public class MembersRepository : IMembersRepository
     {
@@ -131,7 +131,7 @@ namespace LessonMonitor.DataAccess.MSSQL
             memberEntity.Name = member.Name;
             memberEntity.YouTubeAccountId = member.YouTubeAccountId;
             memberEntity.UpdatedDate = DateTime.Now;
-            
+
             await _context.SaveChangesAsync();
 
             return memberEntity.Id;

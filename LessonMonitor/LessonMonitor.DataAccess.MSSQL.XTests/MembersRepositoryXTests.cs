@@ -1,4 +1,5 @@
 using AutoFixture;
+using LessonMonitor.DataAccess.MSSQL.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Xunit;

@@ -19,7 +19,7 @@ namespace LessonMonitor.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(NewHomework request)
+        public async Task<IActionResult> Create([FromBody] NewHomework request)
         {
             var homework = new Core.CoreModels.Homework
             {
@@ -31,18 +31,14 @@ namespace LessonMonitor.API.Controllers
 
             var homeworkId = await _homeworksService.Create(homework);
 
-            if (homeworkId != default)
-            {
-                return Ok(new { Successful = $"Homework created: id {homeworkId}" });
-            }
-            else
-            {
-                return NotFound(new { Error = "Homework is not created" });
-            }
+            if (homeworkId == default)
+                return BadRequest();
+
+            return Ok(new CreatedHomewrok{ HomeworkId = homeworkId });        
         }
 
         [HttpDelete]
-        public async Task<ActionResult> Delete(int homeworkId)
+        public async Task<IActionResult> Delete(int homeworkId)
         {
             var result = await _homeworksService.Delete(homeworkId);
 

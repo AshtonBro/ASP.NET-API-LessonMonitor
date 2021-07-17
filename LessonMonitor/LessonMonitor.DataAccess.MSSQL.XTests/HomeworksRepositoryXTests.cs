@@ -1,4 +1,5 @@
 using AutoFixture;
+using LessonMonitor.DataAccess.MSSQL.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Xunit;
@@ -7,8 +8,8 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
 {
     public class HomeworksRepositoryXTests
     {
-        private LMonitorDbContext _context;
-        private HomeworksRepository _repository;
+        private readonly LMonitorDbContext _context;
+        private readonly HomeworksRepository _repository;
 
         public HomeworksRepositoryXTests() 
         {

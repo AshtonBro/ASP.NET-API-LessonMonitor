@@ -110,21 +110,25 @@ namespace LessonMonitor.BussinesLogic.XTests
             _homeworkRepositoryMock.Verify(x => x.Delete(It.IsAny<int>()), Times.Never);
         }
 
-        //[Fact]
-        //public async Task Update_HomeworkIsValide_ShouldUpdateHomework()
-        //{
-        //    // arrange
-        //    var fixture = new Fixture();
-        //    var homework = fixture.Build<Homework>()
-        //        .Create();
+        [Fact]
+        public async Task Update_HomeworkIsValide_ShouldUpdateHomework()
+        {
+            // arrange
+            var fixture = new Fixture();
+            var homework = fixture.Build<Homework>()
+                .Create();
 
-        //    // act
-        //    var homeworkId = await _service.Update(homework);
 
-        //    // assert 
-        //    homeworkId.Should().BeGreaterThan(default);
-        //    _homeworkRepositoryMock.Verify(x => x.Update(homework), Times.Once);
-        //}
+            _homeworkRepositoryMock
+                .Setup(x => x.Update(homework))
+                .ReturnsAsync(homework.Id);
+            // act
+            var homeworkId = await _service.Update(homework);
+
+            // assert 
+            homeworkId.Should().BeGreaterThan(default);
+            _homeworkRepositoryMock.Verify(x => x.Update(homework), Times.Once);
+        }
 
         [Theory]
         [InlineData(null, "Test")]

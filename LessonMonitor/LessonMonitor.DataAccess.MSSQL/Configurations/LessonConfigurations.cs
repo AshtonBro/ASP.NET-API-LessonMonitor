@@ -14,11 +14,14 @@ namespace LessonMonitor.DataAccess.MSSQL.Configurations
             builder.Property(x => x.Description).HasMaxLength(2000);
             builder.Property(x => x.YouTubeBroadcastId).HasMaxLength(2000);
 
+            builder.ToTable("Lessons");
+
             builder.HasOne(x => x.Homework)
                 .WithOne(x => x.Lesson)
                 .OnDelete(DeleteBehavior.NoAction)
-                .HasForeignKey<Lesson>(x => x.HomeworkId)
-                .IsRequired();
+                .HasPrincipalKey<Lesson>(x => x.Id)
+                .HasForeignKey<Homework>(x => x.LessonId)
+                .IsRequired(false);
         }
     }
 }

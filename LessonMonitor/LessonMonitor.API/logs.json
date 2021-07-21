@@ -3177,3 +3177,260 @@
     "successful": "Member updated: id 2"
   }
 },
+{
+  "ControllerName": "Members",
+  "ActionName": "Get",
+  "Response": {
+    "id": 2,
+    "name": "Evgeniy",
+    "youTubeAccountId": null
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Get",
+  "Response": {
+    "members": [
+      {
+        "id": 2,
+        "name": "Evgeniy",
+        "youTubeAccountId": null
+      },
+      {
+        "id": 3,
+        "name": "Max",
+        "youTubeAccountId": "02629c8f89ef75fa7a78265a0025"
+      }
+    ]
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Create",
+  "Response": {
+    "memberId": 4
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Create",
+  "Response": {
+    "memberId": 5
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Create",
+  "Response": {
+    "memberId": 6
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Delete",
+  "Response": {
+    "successful": "Member is deleted: True"
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Get",
+  "Response": {
+    "id": 5,
+    "name": "SAD",
+    "youTubeAccountId": "sad23"
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Get",
+  "Response": {
+    "members": [
+      {
+        "id": 2,
+        "name": "Evgeniy",
+        "youTubeAccountId": null
+      },
+      {
+        "id": 3,
+        "name": "Max",
+        "youTubeAccountId": "02629c8f89ef75fa7a78265a0025"
+      },
+      {
+        "id": 4,
+        "name": "string",
+        "youTubeAccountId": "string"
+      },
+      {
+        "id": 5,
+        "name": "SAD",
+        "youTubeAccountId": "sad23"
+      }
+    ]
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Update",
+  "Response": {
+    "memberUpdatedId": 6
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Create",
+  "Response": {
+    "memberId": 7
+  }
+},
+{
+  "ControllerName": "Lessons",
+  "ActionName": "Create",
+  "Response": {
+    "lessonId": 1
+  }
+},
+{
+  "ControllerName": "Homework",
+  "ActionName": "Create",
+  "Response": {
+    "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+    "title": "One or more validation errors occurred.",
+    "status": 400,
+    "traceId": "00-06d116a739b3264f978c14c6e0bf4f48-9bd38b2d64c5e248-00",
+    "errors": {
+      "Title": [
+        "Title contain special character or whitespace"
+      ],
+      "Description": [
+        "Description contain special character or whitespace"
+      ]
+    }
+  }
+},
+{
+  "ControllerName": "Homework",
+  "ActionName": "Create",
+  "Response": {
+    "homeworkId": 1
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Create",
+  "Response": {
+    "memberId": 1
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Create",
+  "Response": {
+    "memberId": 2
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Create",
+  "Response": {
+    "memberId": 3
+  }
+},
+{
+  "ControllerName": "Questions",
+  "ActionName": "Create",
+  "Response": {
+    "questionId": 1
+  }
+},
+{
+  "ControllerName": "Questions",
+  "ActionName": "Create",
+  "Response": {
+    "questionId": 2
+  }
+},
+{
+  "ControllerName": "Questions",
+  "ActionName": "Get",
+  "Response": {
+    "id": 1,
+    "memberId": 3,
+    "description": "Это что ваща?"
+  }
+},
+{
+  "ControllerName": "Questions",
+  "ActionName": "Get",
+  "Response": {
+    "questions": [
+      {
+        "id": 1,
+        "memberId": 3,
+        "description": "Это что ваща?"
+      },
+      {
+        "id": 2,
+        "memberId": 3,
+        "description": "А как это делать?"
+      }
+    ]
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Get",
+  "Response": {
+    "members": [
+      {
+        "id": 1,
+        "name": "Evgeniy",
+        "youTubeAccountId": "ASHID"
+      },
+      {
+        "id": 2,
+        "name": "Roman",
+        "youTubeAccountId": "ROMANID"
+      },
+      {
+        "id": 3,
+        "name": "Coder",
+        "youTubeAccountId": "MIHAID"
+      }
+    ]
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Get",
+  "Response": {
+    "id": 1,
+    "name": "Evgeniy",
+    "youTubeAccountId": "ASHID"
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Delete",
+  "Response": {
+    "successful": "Member is deleted: True"
+  }
+},
+{
+  "ControllerName": "Members",
+  "ActionName": "Get",
+  "Response": {
+    "members": [
+      {
+        "id": 1,
+        "name": "Evgeniy",
+        "youTubeAccountId": "ASHID"
+      },
+      {
+        "id": 2,
+        "name": "Roman",
+        "youTubeAccountId": "ROMANID"
+      }
+    ]
+  }
+},

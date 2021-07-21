@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using LessonMonitor.Core.Services;
-using System;
-using System.Collections.Generic;
 using LessonMonitor.API.Contracts;
 using System.Threading.Tasks;
+using AutoMapper;
+using System.Net;
 
 namespace LessonMonitor.API.Controllers
 {
@@ -12,25 +13,24 @@ namespace LessonMonitor.API.Controllers
     public class QuestionsController : ControllerBase
     {
         private readonly IQuestionsService _questionsService;
-        public QuestionsController(IQuestionsService questionsService)
+        private readonly IMapper _mapper;
+
+        public QuestionsController(IQuestionsService questionsService, IMapper mapper)
         {
             _questionsService = questionsService;
+            _mapper = mapper;
         }
 
         [HttpPost]
         public async Task<ActionResult> Create(NewQuestion request)
         {
-            var question = new Core.CoreModels.Question
-            {
-                MemberId = request.MemberId,
-                Description = request.Description
-            };
+            var question = _mapper.Map<NewQuestion, Core.CoreModels.Question>(request);
 
             var questionId = await _questionsService.Create(question);
 
             if (questionId != default)
             {
-                return Ok(new { Successful = $"Question created: id {questionId}" });
+                return Ok( new CreatedQuestion() { QuestionId = questionId } );
             }
             else
             {
@@ -45,7 +45,7 @@ namespace LessonMonitor.API.Controllers
 
             if (result)
             {
-                return Ok(new { Successful = "Question is deleted" });
+                return Ok(new { Successful = $"Question is deleted: {result}" });
             }
             else
             {
@@ -60,12 +60,7 @@ namespace LessonMonitor.API.Controllers
 
             if (question is not null)
             {
-                return new Question
-                {
-                    Id = question.Id,
-                    MemberId = question.MemberId,
-                    Description = question.Description
-                };
+                return _mapper.Map<Core.CoreModels.Question, Question>(question);
             }
             else
             {
@@ -74,24 +69,16 @@ namespace LessonMonitor.API.Controllers
         }
 
         [HttpGet("GetAllQuestions")]
-        public async Task<Question[]> Get()
+        [ProducesResponseType(typeof(Question[]), (int)HttpStatusCode.OK)]
+        public async Task<QuestiosArray> Get()
         {
-            var questionModels = new List<Question>();
+            var getQuestions = await _questionsService.Get();
 
-            var questions = await _questionsService.Get();
-
-            if (questions.Length != 0 || questions is null)
+            if (getQuestions.Length != 0 || getQuestions is null)
             {
-                foreach (var question in questions)
-                {
-                    questionModels.Add(new Question
-                    {
-                        Id = question.Id,
-                        MemberId = question.MemberId,
-                        Description = question.Description
-                    });
-                }
-                return questionModels.ToArray();
+                var questions = _mapper.Map<Core.CoreModels.Question[], Question[]>(getQuestions);
+
+                return new QuestiosArray() { Questions = questions };
             }
             else
             {

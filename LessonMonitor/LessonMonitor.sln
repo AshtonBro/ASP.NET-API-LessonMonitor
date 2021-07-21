@@ -18,6 +18,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LessonMonitor.BussinesLogic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LessonMonitor.DataAccess.MSSQL.XTests", "LessonMonitor.DataAccess.MSSQL.XTests\LessonMonitor.DataAccess.MSSQL.XTests.csproj", "{BB99C32B-6736-47C4-9F8A-6148C1441783}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{415383AF-A168-4105-9AE1-496843BBCC1A}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

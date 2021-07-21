@@ -1,8 +1,10 @@
-﻿using LessonMonitor.API.Contracts;
+﻿using AutoMapper;
+using LessonMonitor.API.Contracts;
 using LessonMonitor.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace LessonMonitor.API.Controllers
@@ -12,22 +14,18 @@ namespace LessonMonitor.API.Controllers
     public class HomeworkController : ControllerBase
     {
         private readonly IHomeworksService _homeworksService;
+        private readonly IMapper _mapper;
 
-        public HomeworkController(IHomeworksService homeworksService)
+        public HomeworkController(IHomeworksService homeworksService, IMapper mapper)
         {
             _homeworksService = homeworksService;
+            _mapper = mapper;
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] NewHomework request)
         {
-            var homework = new Core.CoreModels.Homework
-            {
-                Title = request.Title,
-                Description = request.Description,
-                Link = request.Link,
-                LessonId = request.LessonId
-            };
+            var homework = _mapper.Map<NewHomework, Core.CoreModels.Homework>(request);
 
             var homeworkId = await _homeworksService.Create(homework);
 
@@ -44,7 +42,7 @@ namespace LessonMonitor.API.Controllers
 
             if (result)
             {
-                return Ok(new { Successful = "Homework is deleted" });
+                return Ok(new { Successful = $"Homework is deleted: {result}" });
             }
             else
             {
@@ -59,14 +57,7 @@ namespace LessonMonitor.API.Controllers
 
             if (homework is not null)
             {
-                return new Homework
-                {
-                    Id = homework.Id,
-                    Title = homework.Title,
-                    Description = homework.Description,
-                    Link = homework.Link,
-                    LessonId = homework.LessonId
-                };
+                return _mapper.Map<Core.CoreModels.Homework, Contracts.Homework>(homework);
             }
             else
             {
@@ -75,26 +66,16 @@ namespace LessonMonitor.API.Controllers
         }
 
         [HttpGet("GetAllHomeworks")]
-        public async Task<Homework[]> Get()
+        [ProducesResponseType(typeof(Homework[]), (int)HttpStatusCode.OK)]
+        public async Task<HomeworksArray> Get()
         {
-            var homeworkModels = new List<Homework>();
+            var getHomeworks = await _homeworksService.Get();
 
-            var homeworks = await _homeworksService.Get();
-
-            if (homeworks.Length != 0 || homeworks is null)
+            if (getHomeworks.Length != 0 || getHomeworks is null)
             {
-                foreach (var homework in homeworks)
-                {
-                    homeworkModels.Add(new Homework
-                    {
-                        Id = homework.Id,
-                        Title = homework.Title,
-                        Description = homework.Description,
-                        Link = homework.Link,
-                        LessonId = homework.LessonId
-                    });
-                }
-                return homeworkModels.ToArray();
+                var homeworks = _mapper.Map<Core.CoreModels.Homework[], Homework[]>(getHomeworks);
+
+                return new HomeworksArray() { Homeworks = homeworks };
             }
             else
             {
@@ -105,20 +86,13 @@ namespace LessonMonitor.API.Controllers
         [HttpPost("UpdateHomework")]
         public async Task<ActionResult> Update(Homework request)
         {
-            var homework = new Core.CoreModels.Homework
-            {
-                Id = request.Id,
-                Title = request.Title,
-                Description = request.Description,
-                Link = request.Link,
-                LessonId = request.LessonId
-            };
+            var homework = _mapper.Map<Homework, Core.CoreModels.Homework>(request);
 
             var homeworkId = await _homeworksService.Update(homework);
 
             if (homeworkId != default)
             {
-                return Ok(new { Successful = $"Homework updated: id {homeworkId}" });
+                return Ok(new { HomeworkUpdatedId = homeworkId });
             }
             else
             {

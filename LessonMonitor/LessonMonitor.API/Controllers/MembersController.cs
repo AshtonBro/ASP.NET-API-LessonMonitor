@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LessonMonitor.API.Contracts;
 using System.Net;
+using AutoMapper;
 
 namespace LessonMonitor.API.Controllers
 {
@@ -13,20 +14,18 @@ namespace LessonMonitor.API.Controllers
     public class MembersController : ControllerBase
     {
         private readonly IMembersService _membersService;
+        private readonly IMapper _mapper;
 
-        public MembersController(IMembersService membersService)
+        public MembersController(IMembersService membersService, IMapper mapper)
         {
             _membersService = membersService;
+            _mapper = mapper;
         }
 
         [HttpPost]
         public async Task<ActionResult> Create(NewMember request)
         {
-            var member = new Core.CoreModels.Member
-            {
-                Name = request.Name,
-                YouTubeAccountId = request.YouTubeUserId
-            };
+            var member = _mapper.Map<NewMember, Core.CoreModels.Member>(request);
 
             var memberId = await _membersService.Create(member);
 
@@ -43,7 +42,7 @@ namespace LessonMonitor.API.Controllers
 
             if (result)
             {
-                return Ok(new { Successful = "Member is deleted" });
+                return Ok(new { Successful = $"Member is deleted: {result}" });
             }
             else
             {
@@ -59,12 +58,7 @@ namespace LessonMonitor.API.Controllers
 
             if (member is not null)
             {
-                return new Contracts.Member
-                {
-                    Id = member.Id,
-                    Name = member.Name,
-                    YouTubeAccountId = member.YouTubeAccountId
-                };
+                return _mapper.Map<Core.CoreModels.Member, Member>(member);
             }
             else
             {
@@ -74,24 +68,15 @@ namespace LessonMonitor.API.Controllers
 
         [HttpGet("GetAllMembers")]
         [ProducesResponseType(typeof(Member[]), (int)HttpStatusCode.OK)]
-        public async Task<Contracts.Member[]> Get()
+        public async Task<MembersArray> Get()
         {
-            var memberModels = new List<Member>();
-
-            var members = await _membersService.Get();
-
-            if (members.Length != 0 || members is null)
+            var getMembers = await _membersService.Get();
+            
+            if (getMembers.Length != 0 || getMembers is null)
             {
-                foreach (var member in members)
-                {
-                    memberModels.Add(new Member
-                    {
-                        Id = member.Id,
-                        Name = member.Name,
-                        YouTubeAccountId = member.YouTubeAccountId
-                    });
-                }
-                return memberModels.ToArray();
+                var members = _mapper.Map<Core.CoreModels.Member[], Member[]>(getMembers);
+
+                return new MembersArray() { Members = members };
             }
             else
             {
@@ -102,22 +87,17 @@ namespace LessonMonitor.API.Controllers
         [HttpPost("UpdateMember")]
         public async Task<ActionResult> Update(Member request)
         {
-            var member = new Core.CoreModels.Member
-            {
-                Id = request.Id,
-                Name = request.Name,
-                YouTubeAccountId = request.YouTubeAccountId
-            };
+            var member = _mapper.Map<Member, Core.CoreModels.Member>(request);
 
             var memberId = await _membersService.Update(member);
 
             if (memberId != default)
             {
-                return Ok(new { Successful = $"Member updated: id {memberId}" });
+                return Ok( new { MemberUpdatedId = memberId } );
             }
             else
             {
-                return NotFound(new { Error = "Member is not updated" });
+                return NotFound( new { Error = "Member is not updated" } );
             }
         }
 

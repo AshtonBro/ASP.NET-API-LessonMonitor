@@ -24,7 +24,6 @@ namespace LessonMonitor.BussinesLogic.XTests
         public async Task Create_LessonIsValid_ShouldCreateNewLesson()
         {
             //arrange
-
             var expectedLessonId = _fixture.Create<int>();
             var newLesson = _fixture.Create<Lesson>();
 
@@ -36,8 +35,7 @@ namespace LessonMonitor.BussinesLogic.XTests
                    .Setup(x => x.Get(newLesson.YouTubeBroadcastId))
                    .ReturnsAsync(() => null);
             //act
-            var createdLessonId = _service.Create(newLesson);
-
+            var createdLessonId = await _service.Create(newLesson);
 
             //assets
             createdLessonId.Should().Be(expectedLessonId);

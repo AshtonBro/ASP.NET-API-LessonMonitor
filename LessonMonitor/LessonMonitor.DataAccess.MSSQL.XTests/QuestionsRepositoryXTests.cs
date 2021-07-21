@@ -1,4 +1,5 @@
 using AutoFixture;
+using AutoMapper;
 using LessonMonitor.DataAccess.MSSQL.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
     {
         private LMonitorDbContext _context;
         private QuestionsRepository _repository;
+        private IMapper _mapper;
 
         public QuestionsRepositoryXTests() 
         {
@@ -21,7 +23,16 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
 
             _context = new LMonitorDbContext(options);
 
-            _repository = new QuestionsRepository(_context);
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<DataAccessMapperProfile>();
+            });
+
+            configuration.CompileMappings();
+
+            _mapper = new Mapper(configuration);
+
+            _repository = new QuestionsRepository(_context, _mapper);
         }
 
         [Fact]
@@ -29,7 +40,9 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
         {
             // arrange
             var fixture = new Fixture();
-            var question = fixture.Build<Core.CoreModels.Question>().Create();
+            var question = fixture.Build<Core.CoreModels.Question>()
+                .Without(x => x.Id)
+                .Create();
             question.MemberId = 1;
 
             // act
@@ -47,7 +60,9 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
 
             for (int i = 0; i < 10; i++)
             {
-                var question = fixture.Build<Core.CoreModels.Question>().Create();
+                var question = fixture.Build<Core.CoreModels.Question>()
+                    .Without(x => x.Id)
+                    .Create();
                 question.MemberId = 1;
 
                 var questionId = await _repository.Add(question);
@@ -66,7 +81,9 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
         {
             // arrange
             var fixture = new Fixture();
-            var question = fixture.Build<Core.CoreModels.Question>().Create();
+            var question = fixture.Build<Core.CoreModels.Question>()
+                .Without(x => x.Id)
+                .Create();
             question.MemberId = 1;
 
             // act
@@ -81,7 +98,9 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
         public async Task Delete()
         {
             var fixture = new Fixture();
-            var question = fixture.Build<Core.CoreModels.Question>().Create();
+            var question = fixture.Build<Core.CoreModels.Question>()
+                .Without(x => x.Id)
+                .Create();
             question.MemberId = 1;
 
             // act

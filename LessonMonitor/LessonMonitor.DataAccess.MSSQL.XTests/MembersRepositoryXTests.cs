@@ -1,4 +1,5 @@
 using AutoFixture;
+using AutoMapper;
 using LessonMonitor.DataAccess.MSSQL.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
     {
         private LMonitorDbContext _context;
         private MembersRepository _repository;
+        private IMapper _mapper;
 
         public MembersRepositoryXTests() 
         {
@@ -21,7 +23,15 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
 
             _context = new LMonitorDbContext(options);
 
-            _repository = new MembersRepository(_context);
+            var configuration = new MapperConfiguration(cfg => {
+                cfg.AddProfile<DataAccessMapperProfile>();
+            });
+
+            configuration.CompileMappings();
+
+            _mapper = new Mapper(configuration);
+
+            _repository = new MembersRepository(_context, _mapper);
         }
 
         [Fact]
@@ -29,13 +39,15 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
         {
             // arrange
             var fixture = new Fixture();
-            var member = fixture.Build<Core.CoreModels.Member>().Create();
+            var member = fixture.Build<Core.CoreModels.Member>()
+                .Without(x => x.Id)
+                .Create();
             
             // act
-            var memberkId = await _repository.Add(member);
+            var memberId = await _repository.Add(member);
 
             // assert
-            Assert.True(memberkId > 0);
+            Assert.True(memberId > 0);
         }
 
         [Fact]
@@ -43,7 +55,9 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
         {
             // arrange
             var fixture = new Fixture();
-            var member = fixture.Build<Core.CoreModels.Member>().Create();
+            var member = fixture.Build<Core.CoreModels.Member>()
+                .Without(x => x.Id)
+                .Create();
 
             var memberkId = await _repository.Add(member);
 
@@ -62,16 +76,7 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
         [Fact]
         public async Task Get()
         {
-            // arrange\
-            var fixture = new Fixture();
-
-            for (int i = 0; i < 10; i++)
-            {
-                var member = fixture.Build<Core.CoreModels.Member>().Create();
-
-                var memberId = await _repository.Add(member);
-            }
-
+            // arrange
             // act
             var members = await _repository.Get();
 
@@ -85,7 +90,9 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
         {
             // arrange
             var fixture = new Fixture();
-            var member = fixture.Build<Core.CoreModels.Member>().Create();
+            var member = fixture.Build<Core.CoreModels.Member>()
+                .Without(x => x.Id)
+                .Create();
 
             // act
             var memberId = await _repository.Add(member);
@@ -99,7 +106,9 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
         public async Task Delete()
         {
             var fixture = new Fixture();
-            var member = fixture.Build<Core.CoreModels.Member>().Create();
+            var member = fixture.Build<Core.CoreModels.Member>()
+                .Without(x => x.Id)
+                .Create();
 
             // act
             var memberId = await _repository.Add(member);

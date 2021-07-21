@@ -11,7 +11,5 @@ namespace LessonMonitor.API.Contracts
 
         public Uri Link { get; set; }
         public int LessonId { get; set; }
-        public int MemberId { get; set; }
-        public int MentorId { get; set; }
     }
 }

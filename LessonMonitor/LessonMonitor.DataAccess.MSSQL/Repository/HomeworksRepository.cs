@@ -4,15 +4,19 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;
+using AutoMapper;
 
 namespace LessonMonitor.DataAccess.MSSQL.Repository
 {
     public class HomeworksRepository : IHomeworksRepository
     {
         private LMonitorDbContext _context;
-        public HomeworksRepository(LMonitorDbContext context)
+        private readonly IMapper _mapper;
+
+        public HomeworksRepository(LMonitorDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<int> Add(Core.CoreModels.Homework newHomework)
@@ -20,26 +24,12 @@ namespace LessonMonitor.DataAccess.MSSQL.Repository
             if (newHomework is null)
                 throw new ArgumentNullException(nameof(newHomework));
 
-            var newHomeworkEntity = new Entities.Homework
-            {
-                Title = newHomework.Title,
-                Description = newHomework.Description,
-                Link = newHomework.Link,
-                LessonId = newHomework.LessonId
-            };
+            var newHomeworkEntity = _mapper.Map<Core.CoreModels.Homework, Entities.Homework>(newHomework);
 
-            var result = await _context.AddAsync(newHomeworkEntity);
+            await _context.AddAsync(newHomeworkEntity);
+            await _context.SaveChangesAsync();
 
-            if (result.State == EntityState.Added)
-            {
-                await _context.SaveChangesAsync();
-
-                return newHomeworkEntity.Id;
-            }
-            else
-            {
-                throw new Exception("Model not added.");
-            }
+            return newHomeworkEntity.Id;
         }
 
         public async Task<bool> Delete(int homeworkId)
@@ -74,14 +64,7 @@ namespace LessonMonitor.DataAccess.MSSQL.Repository
 
             if (homeworkExist != null)
             {
-                return new Core.CoreModels.Homework
-                {
-                    Id = homeworkExist.Id,
-                    Title = homeworkExist.Title,
-                    Description = homeworkExist.Description,
-                    Link = homeworkExist.Link,
-                    LessonId = homeworkExist.LessonId
-                };
+                return _mapper.Map<Entities.Homework, Core.CoreModels.Homework>(homeworkExist);
             }
             else
             {
@@ -93,30 +76,9 @@ namespace LessonMonitor.DataAccess.MSSQL.Repository
         {
             var homeworks = await _context.Homeworks.Where(f => f.DeletedDate == null).ToArrayAsync();
 
-            var coreHomeworks = new List<Core.CoreModels.Homework>();
-
             if (homeworks.Length != 0 || homeworks is null)
             {
-                foreach (var homework in homeworks)
-                {
-                    coreHomeworks.Add(new Core.CoreModels.Homework
-                    {
-                        Id = homework.Id,
-                        Title = homework.Title,
-                        Description = homework.Description,
-                        Link = homework.Link,
-                        LessonId = homework.LessonId
-                    });
-                };
-
-                if (coreHomeworks.Count > 0)
-                {
-                    return coreHomeworks.ToArray();
-                }
-                else
-                {
-                    throw new ArgumentNullException(nameof(coreHomeworks));
-                }
+                return _mapper.Map<Entities.Homework[], Core.CoreModels.Homework[]>(homeworks);
             }
             else
             {

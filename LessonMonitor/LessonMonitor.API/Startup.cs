@@ -14,7 +14,6 @@ using LessonMonitor.API.CustomErrors;
 using LessonMonitor.API.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using LessonMonitor.DataAccess.MSSQL.Repository;
-using AutoMapper;
 
 namespace LessonMonitor.API
 {
@@ -43,7 +42,7 @@ namespace LessonMonitor.API
 
             });
 
-            // services.AddSingleton<IGitHubService, GitHubService>();
+            //services.AddSingleton<IGitHubService, GitHubService>();
             //services.AddSingleton<IGitHubRepository, GitHubRepository>();
 
             services.AddScoped<IHomeworksService, HomeworksService>();

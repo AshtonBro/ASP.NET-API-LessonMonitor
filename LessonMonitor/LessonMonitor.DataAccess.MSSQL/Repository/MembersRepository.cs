@@ -1,18 +1,21 @@
 ﻿using System;
 using LessonMonitor.Core.Repositories;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;
+using AutoMapper;
 
 namespace LessonMonitor.DataAccess.MSSQL.Repository
 {
     public class MembersRepository : IMembersRepository
     {
         private LMonitorDbContext _context;
-        public MembersRepository(LMonitorDbContext context)
+        private readonly IMapper _mapper;
+
+        public MembersRepository(LMonitorDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<int> Add(Core.CoreModels.Member newMember)
@@ -20,24 +23,12 @@ namespace LessonMonitor.DataAccess.MSSQL.Repository
             if (newMember is null)
                 throw new ArgumentNullException(nameof(newMember));
 
-            var newMemberEntity = new Entities.Member
-            {
-                Name = newMember.Name,
-                YouTubeAccountId = newMember.YouTubeAccountId
-            };
+            var newMemberEntity = _mapper.Map<Core.CoreModels.Member, Entities.Member>(newMember);
 
-            var result = await _context.AddAsync(newMemberEntity);
+            await _context.AddAsync(newMemberEntity);
+            await _context.SaveChangesAsync();
 
-            if (result.State == EntityState.Added)
-            {
-                await _context.SaveChangesAsync();
-
-                return newMemberEntity.Id;
-            }
-            else
-            {
-                throw new Exception("Model not added.");
-            }
+            return newMemberEntity.Id;
         }
 
         public async Task<bool> Delete(int memberId)
@@ -72,12 +63,7 @@ namespace LessonMonitor.DataAccess.MSSQL.Repository
 
             if (memberExist != null)
             {
-                return new Core.CoreModels.Member
-                {
-                    Id = memberExist.Id,
-                    Name = memberExist.Name,
-                    YouTubeAccountId = memberExist.YouTubeAccountId
-                };
+                return _mapper.Map<Entities.Member, Core.CoreModels.Member>(memberExist);
             }
             else
             {
@@ -87,37 +73,18 @@ namespace LessonMonitor.DataAccess.MSSQL.Repository
 
         public async Task<Core.CoreModels.Member[]> Get()
         {
-
             var members = await _context.Members.Where(f => f.DeletedDate == null).ToArrayAsync();
-
-            var coreMembers = new List<Core.CoreModels.Member>();
 
             if (members.Length != 0 || members is null)
             {
-                foreach (var member in members)
-                {
-                    coreMembers.Add(new Core.CoreModels.Member
-                    {
-                        Id = member.Id,
-                        Name = member.Name,
-                        YouTubeAccountId = member.YouTubeAccountId
-                    });
-                };
-
-                if (coreMembers.Count > 0)
-                {
-                    return coreMembers.ToArray();
-                }
-                else
-                {
-                    throw new ArgumentNullException(nameof(coreMembers));
-                }
+                return _mapper.Map<Entities.Member[], Core.CoreModels.Member[]>(members);
             }
             else
             {
                 return null;
             }
         }
+
         public async Task<int> Update(Core.CoreModels.Member member)
         {
             if (member is null)

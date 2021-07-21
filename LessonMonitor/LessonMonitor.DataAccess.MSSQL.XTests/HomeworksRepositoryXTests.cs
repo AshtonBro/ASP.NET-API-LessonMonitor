@@ -1,4 +1,5 @@
 using AutoFixture;
+using AutoMapper;
 using LessonMonitor.DataAccess.MSSQL.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
     {
         private readonly LMonitorDbContext _context;
         private readonly HomeworksRepository _repository;
+        private IMapper _mapper;
+
 
         public HomeworksRepositoryXTests() 
         {
@@ -21,7 +24,15 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
 
             _context = new LMonitorDbContext(options);
 
-            _repository = new HomeworksRepository(_context);
+            var configuration = new MapperConfiguration(cfg => {
+                cfg.AddProfile<DataAccessMapperProfile>();
+            });
+
+            configuration.CompileMappings();
+
+            _mapper = new Mapper(configuration);
+
+            _repository = new HomeworksRepository(_context, _mapper);
         }
 
         [Fact]
@@ -29,7 +40,9 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
         {
             // arrange
             var fixture = new Fixture();
-            var homework = fixture.Build<Core.CoreModels.Homework>().Create();
+            var homework = fixture.Build<Core.CoreModels.Homework>()
+                .Without(x => x.Id)
+                .Create();
             homework.LessonId = 1;
             
             // act
@@ -44,7 +57,9 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
         {
             // arrange
             var fixture = new Fixture();
-            var homework = fixture.Build<Core.CoreModels.Homework>().Create();
+            var homework = fixture.Build<Core.CoreModels.Homework>()
+                .Without(x => x.Id)
+                .Create();
             homework.LessonId = 1;
 
             var homeworkId = await _repository.Add(homework);
@@ -67,16 +82,6 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
         public async Task Get()
         {
             // arrange\
-            var fixture = new Fixture();
-
-            for (int i = 0; i < 10; i++)
-            {
-                var homework = fixture.Build<Core.CoreModels.Homework>().Create();
-                homework.LessonId = 1;
-
-                var questinId = await _repository.Add(homework);
-            }
-
             // act
             var homeworks = await _repository.Get();
 
@@ -90,9 +95,10 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
         {
             // arrange
             var fixture = new Fixture();
-            var homework = fixture.Build<Core.CoreModels.Homework>().Create();
+            var homework = fixture.Build<Core.CoreModels.Homework>()
+                .Without(x => x.Id)
+                .Create();
             homework.LessonId = 1;
-
             // act
             var homeworkId = await _repository.Add(homework);
             var homeworkGetted = await _repository.Get(homeworkId);
@@ -105,7 +111,9 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
         public async Task Delete()
         {
             var fixture = new Fixture();
-            var homework = fixture.Build<Core.CoreModels.Homework>().Create();
+            var homework = fixture.Build<Core.CoreModels.Homework>()
+                .Without(x => x.Id)
+                .Create();
             homework.LessonId = 1;
 
 

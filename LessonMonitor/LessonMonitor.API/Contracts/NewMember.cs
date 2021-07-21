@@ -10,7 +10,7 @@ namespace LessonMonitor.API.Contracts
         [DataType(DataType.Text)]
         public string Name { get; set; }
 
-        public string YouTubeUserId { get; set; }
+        public string YouTubeAccountId { get; set; }
 
     }
 }

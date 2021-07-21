@@ -4,15 +4,19 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System.Linq;
+using AutoMapper;
 
 namespace LessonMonitor.DataAccess.MSSQL.Repository
 {
     public class QuestionsRepository : IQuestionsRepository
     {
         private LMonitorDbContext _context;
-        public QuestionsRepository(LMonitorDbContext context)
+        private readonly IMapper _mapper;
+
+        public QuestionsRepository(LMonitorDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<int> Add(Core.CoreModels.Question newQuestion)
@@ -20,24 +24,12 @@ namespace LessonMonitor.DataAccess.MSSQL.Repository
             if (newQuestion is null)
                 throw new ArgumentNullException(nameof(newQuestion));
 
-            var newQuestionEntity = new Entities.Question
-            {
-                MemberId = newQuestion.MemberId,
-                Description = newQuestion.Description
-            };
+            var newQuestionEntity = _mapper.Map<Core.CoreModels.Question, Entities.Question>(newQuestion);
 
-            var result = await _context.AddAsync(newQuestionEntity);
+            await _context.AddAsync(newQuestionEntity);
+            await _context.SaveChangesAsync();
 
-            if (result.State == EntityState.Added)
-            {
-                await _context.SaveChangesAsync();
-
-                return newQuestionEntity.Id;
-            }
-            else
-            {
-                throw new Exception("Model not added.");
-            }
+            return newQuestionEntity.Id;
         }
 
         public async Task<bool> Delete(int questionId)
@@ -72,12 +64,7 @@ namespace LessonMonitor.DataAccess.MSSQL.Repository
 
             if (questionExist != null)
             {
-                return new Core.CoreModels.Question
-                {
-                    Id = questionExist.Id,
-                    MemberId = questionExist.MemberId,
-                    Description = questionExist.Description
-                };
+                return _mapper.Map<Entities.Question, Core.CoreModels.Question>(questionExist);
             }
             else
             {
@@ -88,30 +75,11 @@ namespace LessonMonitor.DataAccess.MSSQL.Repository
         public async Task<Core.CoreModels.Question[]> Get()
         {
 
-            var questions = await _context.Questions.Where(f => f.DeletedDate == null).ToArrayAsync();
+            var getQuestions = await _context.Questions.Where(f => f.DeletedDate == null).ToArrayAsync();
 
-            var coreQuestions = new List<Core.CoreModels.Question>();
-
-            if (questions.Length != 0 || questions is null)
+            if (getQuestions.Length != 0 || getQuestions is null)
             {
-                foreach (var question in questions)
-                {
-                    coreQuestions.Add(new Core.CoreModels.Question
-                    {
-                        Id = question.Id,
-                        MemberId = question.MemberId,
-                        Description = question.Description
-                    });
-                };
-
-                if (coreQuestions.Count > 0)
-                {
-                    return coreQuestions.ToArray();
-                }
-                else
-                {
-                    throw new ArgumentNullException(nameof(coreQuestions));
-                }
+                return _mapper.Map<Entities.Question[], Core.CoreModels.Question[]>(getQuestions);
             }
             else
             {

@@ -1,22 +1,22 @@
+using LessonMonitor.BusinessLogic;
+using LessonMonitor.Core.Repositories;
+using LessonMonitor.Core.Services;
+using LessonMonitor.DataAccess.MSSQL;
+using LessonMonitor.DataAccess.MSSQL.Repositories;
+using LessonMonitor.GitHubClientApi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.IO;
-using System.Net;
 using Microsoft.OpenApi.Models;
-using LessonMonitor.BussinesLogic;
-using LessonMonitor.Core.Services;
-using LessonMonitor.Core.Repositories;
-using LessonMonitor.DataAccess.MSSQL;
-using LessonMonitor.API.CustomErrors;
-using LessonMonitor.API.Middlewares;
-using Microsoft.EntityFrameworkCore;
-using LessonMonitor.DataAccess.MSSQL.Repository;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
 
 namespace LessonMonitor.API
 {
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -27,9 +27,31 @@ namespace LessonMonitor.API
         public IConfiguration Configuration { get; }
         public string[] AllKeys { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile<ApiMappingProfile>();
+                cfg.AddProfile<DataAccessMappingProfile>();
+                cfg.AddProfile<BusinessLogicMappingProfile>();
+            });
+
+            services.AddScoped<IHomeworksRepository, HomeworksRepository>();
+            services.AddScoped<IHomeworksService, HomeworksService>();
+
+            services.AddScoped<IMembersRepository, MembersRepository>();
+            services.AddScoped<IMembersService, MembersService>();
+
+            services.AddScoped<ILessonsRepository, LessonsRepository>();
+            services.AddScoped<ILessonsService, LessonsService>();
+
+            services.AddGitHubApiClient(Configuration);
+
+            services.AddDbContext<LessonMonitorDbContext>(builder =>
+            {
+                builder.UseSqlServer(Configuration.GetConnectionString("LessonMonitorDb"));
+            });
+
             services.AddControllers();
 
           
@@ -67,11 +89,14 @@ namespace LessonMonitor.API
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LessonMonitor.API", Version = "v1" });
+
+                var filePath = Path.Combine(System.AppContext.BaseDirectory, "LessonMonitor.API.xml");
+
+                c.IncludeXmlComments(filePath);
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure([NotNull] IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

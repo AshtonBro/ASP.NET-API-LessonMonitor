@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace LessonMonitor.API.Contracts
 {
@@ -10,6 +10,5 @@ namespace LessonMonitor.API.Contracts
         public string Description { get; set; }
 
         public Uri Link { get; set; }
-        public int LessonId { get; set; }
     }
 }

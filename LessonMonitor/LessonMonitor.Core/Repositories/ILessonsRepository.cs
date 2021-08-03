@@ -1,11 +1,11 @@
-﻿using LessonMonitor.Core.CoreModels;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace LessonMonitor.Core.Repositories
 {
     public interface ILessonsRepository
     {
-        Task<int> Add(Lesson newlesson);
+        Task<int> Add(Lesson newLesson);
+
         Task<Lesson> Get(string youTubeBroadcastId);
     }
 }

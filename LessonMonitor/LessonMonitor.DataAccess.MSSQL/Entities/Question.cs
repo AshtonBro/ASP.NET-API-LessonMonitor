@@ -1,9 +1,17 @@
-﻿namespace LessonMonitor.DataAccess.MSSQL.Entities
+﻿using System;
+
+namespace LessonMonitor.DataAccess.MSSQL.Entities
 {
-    public class Question : BaseEntity
+    public class Question
     {
-        public string Description { get; set; }
-        public int MemberId { get; set; }
-        public Member Member { get; set; }
+        public int Id { get; set; }
+
+        public string Text { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public VisitedLesson VisitedLesson { get; set; }
+
+        public int VisitedLessonId { get; set; }
     }
 }

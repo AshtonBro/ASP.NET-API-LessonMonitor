@@ -1,11 +1,9 @@
-﻿using LessonMonitor.Core.CoreModels;
-using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace LessonMonitor.Core.Services
 {
     public interface ILessonsService
     {
-        Task<int> Create(Lesson newlesson);
+        Task<int> Create(Lesson newLesson);
     }
 }

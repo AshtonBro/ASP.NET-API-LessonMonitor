@@ -1,4 +1,4 @@
-﻿namespace LessonMonitor.API.Controllers
+﻿namespace LessonMonitor.API.Contracts
 {
     public class CreatedMember
     {

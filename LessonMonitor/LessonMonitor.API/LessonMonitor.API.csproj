@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>D:\Web-developer\3. С#\VS_source\ASP.NET-LessonsMonitor\LessonMonitor\LessonMonitor.API\LessonMonitor.API.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -28,6 +33,30 @@
     <ProjectReference Include="..\LessonMonitor.BussinesLogic\LessonMonitor.BussinesLogic.csproj" />
     <ProjectReference Include="..\LessonMonitor.Core\LessonMonitor.Core.csproj" />
     <ProjectReference Include="..\LessonMonitor.DataAccess.MSSQL\LessonMonitor.DataAccess.MSSQL.csproj" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.1" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.1" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LessonMonitor.BusinessLogic\LessonMonitor.BusinessLogic.csproj" />
+    <ProjectReference Include="..\LessonMonitor.Core\LessonMonitor.Core.csproj" />
+    <ProjectReference Include="..\LessonMonitor.DataAccess.MSSQL\LessonMonitor.DataAccess.MSSQL.csproj" />
+    <ProjectReference Include="..\LessonMonitor.GitHubClientApi\LessonMonitor.GitHubClientApi.csproj" />
   </ItemGroup>
 
 </Project>

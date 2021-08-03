@@ -1,27 +1,35 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LessonMonitor.API.Contracts
 {
+    /// <summary>
+    /// Model is used to created new homework.
+    /// </summary>
     public class NewHomework
     {
-        [Required(ErrorMessage = "Title isn't be empty")]
-        [StringLength(30, ErrorMessage = "Title can't be more than 30 characters")]
-        [RegularExpression(@"^[a-zA-Zа-яА-Яё0-9\s]+$", ErrorMessage = "Title contain special character or whitespace")]
-        [DataType(DataType.Text)]
+        /// <summary>
+        /// Title of homework.
+        /// </summary>
+        [Required]
         public string Title { get; set; }
 
-        [Required(ErrorMessage = "Description isn't be empty")]
-        [StringLength(500, ErrorMessage = "Description can't be more than 500 characters")]
-        [RegularExpression(@"^[a-zA-Zа-яА-Яё0-9\s]+$", ErrorMessage = "Description contain special character or whitespace")]
-        [DataType(DataType.Text)]
+        /// <summary>
+        /// Description of homework.
+        /// </summary>
+        [Required]
         public string Description { get; set; }
 
-        public int LessonId { get; set; }
-
-        [Required(ErrorMessage = "Link isn't be empty")]
-        [RegularExpression(@"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$", ErrorMessage = "Entry should not contain url.")]
-        [DataType(DataType.Text)]
+        /// <summary>
+        /// Link to github repository with homework.
+        /// </summary>
+        [Required]
         public Uri Link { get; set; }
+
+        /// <summary>
+        /// Lesson to which the homework belongs.
+        /// </summary>
+        [Required]
+        public int LessonId { get; set; }
     }
 }

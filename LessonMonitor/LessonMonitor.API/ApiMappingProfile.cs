@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 
 namespace LessonMonitor.API
 {
@@ -6,17 +6,13 @@ namespace LessonMonitor.API
     {
         public ApiMappingProfile()
         {
-            CreateMap<Contracts.NewMember, Core.CoreModels.Member>();
-            CreateMap<Core.CoreModels.Member, Contracts.Member>().ReverseMap();
+            CreateMap<Contracts.NewMember, Core.Member>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
 
-            CreateMap<Contracts.NewHomework, Core.CoreModels.Homework>();
-            CreateMap<Core.CoreModels.Homework, Contracts.Homework>().ReverseMap();
+            CreateMap<Core.Member, Contracts.Member>().ReverseMap();
 
-            CreateMap<Contracts.NewLesson, Core.CoreModels.Lesson>();
-            CreateMap<Core.CoreModels.Lesson, Contracts.Lesson>().ReverseMap();
-
-            CreateMap<Contracts.NewQuestion, Core.CoreModels.Question>();
-            CreateMap<Core.CoreModels.Question, Contracts.Question>().ReverseMap();
+            CreateMap<Contracts.NewLesson, Core.Lesson>();
+            //CreateMap<Core.Lesson, Contracts.Lesson>().ReverseMap();
         }
     }
 }

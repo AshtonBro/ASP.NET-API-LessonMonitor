@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace LessonMonitor.DataAccess.MSSQL.Entities
 {
-    public class Member : BaseEntity
+    public class Member
     {
-        public string Name { get; set; }
-        public string YouTubeAccountId { get; set; }
-        public GitHubAccount GitHubAccount { get; set; }
+        public int Id { get; set; }
 
-        public ICollection<Question> Questions { get; set; }
-        public ICollection<Homework> Homeworks { get; set; }
+        public string Name { get; set; }
+
+        public string YouTubeUserId { get; set; }
+
+        public GithubAccount GithubAccount { get; set; }
+
+        public ICollection<VisitedLesson> VisitedLessons { get; set; }
     }
 }

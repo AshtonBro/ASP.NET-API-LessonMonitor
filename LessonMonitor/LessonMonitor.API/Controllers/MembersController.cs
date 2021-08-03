@@ -1,105 +1,74 @@
-﻿using LessonMonitor.Core.Services;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using LessonMonitor.API.Contracts;
 using System.Net;
+using System.Threading.Tasks;
 using AutoMapper;
+using LessonMonitor.API.Contracts;
+using LessonMonitor.Core.Repositories;
+using LessonMonitor.Core.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LessonMonitor.API.Controllers
 {
-    [ApiController]
     [Route("[controller]")]
+    [ApiController]
     public class MembersController : ControllerBase
     {
         private readonly IMembersService _membersService;
         private readonly IMapper _mapper;
 
-        public MembersController(IMembersService membersService, IMapper mapper)
+        public MembersController(
+            IMembersService membersService,
+            IMapper mapper)
         {
             _membersService = membersService;
             _mapper = mapper;
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Create(NewMember request)
+        [HttpGet]
+        [ProducesResponseType(typeof(Member[]), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Get()
         {
-            var member = _mapper.Map<NewMember, Core.CoreModels.Member>(request);
+            var members = await _membersService.Get();
+            var result = _mapper.Map<Core.Member[], Member[]>(members);
 
+            return Ok(new MembersList { Members = result });
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(CreatedMember), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Create([FromBody] NewMember newMember)
+        {
+            var member = _mapper.Map<NewMember, Core.Member>(newMember);
             var memberId = await _membersService.Create(member);
-
-            if (memberId == default)
-                return BadRequest();
 
             return Ok(new CreatedMember { MemberId = memberId });
         }
 
-        [HttpDelete]
-        public async Task<ActionResult> Delete(int memberId)
-        {
-            var result = await _membersService.Delete(memberId);
-
-            if (result)
-            {
-                return Ok(new { Successful = $"Member is deleted: {result}" });
-            }
-            else
-            {
-                return NotFound(new { Error = "Member has already been deleted or not an invalid id" });
-            }
-        }
-
-        [HttpGet("GetMemberById")]
+        [HttpGet("{youtubeUserId}")]
         [ProducesResponseType(typeof(Member), (int)HttpStatusCode.OK)]
-        public async Task<Member> Get(int memberId)
+        public async Task<IActionResult> Get([FromRoute] string youtubeUserId)
         {
-            var member = await _membersService.Get(memberId);
+            var member = await _membersService.Get(youtubeUserId);
+            var result = _mapper.Map<Core.Member, Member>(member);
 
-            if (member is not null)
-            {
-                return _mapper.Map<Core.CoreModels.Member, Member>(member);
-            }
-            else
-            {
-                throw new ArgumentNullException("No member has been created");
-            }
+            return Ok(result);
         }
 
-        [HttpGet("GetAllMembers")]
-        [ProducesResponseType(typeof(Member[]), (int)HttpStatusCode.OK)]
-        public async Task<MembersArray> Get()
+        [HttpGet("{memberId:int}/Statistics")]
+        [ProducesResponseType(typeof(Core.MemberStatistic[]), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetStatistics([FromRoute] int memberId)
         {
-            var getMembers = await _membersService.Get();
-            
-            if (getMembers.Length != 0 || getMembers is null)
-            {
-                var members = _mapper.Map<Core.CoreModels.Member[], Member[]>(getMembers);
+            var memberStatistics = await _membersService.GetStatistics(memberId);
 
-                return new MembersArray() { Members = members };
-            }
-            else
-            {
-                throw new ArgumentNullException("No member has been created");
-            }
+            return Ok(memberStatistics);
         }
 
-        [HttpPost("UpdateMember")]
-        public async Task<ActionResult> Update(Member request)
+        [HttpGet("{memberId:int}/Homeworks")]
+        [ProducesResponseType(typeof(Core.MemberHomework[]), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetHomeworks([FromRoute] int memberId)
         {
-            var member = _mapper.Map<Member, Core.CoreModels.Member>(request);
+            var memberHomeworks = await _membersService.GetHomeworks(memberId);
 
-            var memberId = await _membersService.Update(member);
-
-            if (memberId != default)
-            {
-                return Ok( new { MemberUpdatedId = memberId } );
-            }
-            else
-            {
-                return NotFound( new { Error = "Member is not updated" } );
-            }
+            return Ok(memberHomeworks);
         }
-
     }
 }

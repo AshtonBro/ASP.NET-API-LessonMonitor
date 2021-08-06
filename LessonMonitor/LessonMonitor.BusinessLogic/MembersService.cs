@@ -2,12 +2,12 @@ using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using LessonMonitor.BusinessLogic.Validators;
-using LessonMonitor.Core;
 using LessonMonitor.Core.GitHub;
 using LessonMonitor.Core.Repositories;
 using LessonMonitor.Core.Exceptions;
 using LessonMonitor.Core.Services;
 using System.Collections.Generic;
+using LessonMonitor.Core.CoreModels;
 
 namespace LessonMonitor.BusinessLogic
 {

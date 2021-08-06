@@ -1,20 +1,21 @@
 ﻿using AutoMapper;
+using LessonMonitor.Core.CoreModels;
 using System.Collections.Generic;
 
 namespace LessonMonitor.DataAccess.MSSQL
 {
-    public class MemberStatisticConverter : ITypeConverter<Entities.Member, Core.MemberStatistic[]>
+    public class MemberStatisticConverter : ITypeConverter<Entities.Member, MemberStatistic[]>
     {
-        public Core.MemberStatistic[] Convert(
+        public MemberStatistic[] Convert(
             Entities.Member source,
-            Core.MemberStatistic[] destination,
+            MemberStatistic[] destination,
             ResolutionContext context)
         {
-            var result = new List<Core.MemberStatistic>();
+            var result = new List<MemberStatistic>();
 
             foreach (var visitedLesson in source.VisitedLessons)
             {
-                var statistic = new Core.MemberStatistic
+                var statistic = new Core.CoreModels.MemberStatistic
                 {
                     MemberName = source.Name,
                     LessonDate = visitedLesson.Lesson.StartDate,

@@ -1,6 +1,6 @@
 using AutoFixture;
 using AutoMapper;
-using LessonMonitor.DataAccess.MSSQL.Repository;
+using LessonMonitor.DataAccess.MSSQL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Xunit;
@@ -9,19 +9,19 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
 {
     public class QuestionsRepositoryXTests
     {
-        private LMonitorDbContext _context;
+        private LessonMonitorDbContext _context;
         private QuestionsRepository _repository;
         private IMapper _mapper;
 
         public QuestionsRepositoryXTests() 
         {
-            var optionsBuilder = new DbContextOptionsBuilder<LMonitorDbContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<LessonMonitorDbContext>();
 
             var options = optionsBuilder
                     .UseSqlServer(@"Data Source=ASHTON\ASHTON;Initial Catalog=LessonMonitorDbMainTest;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False")
                     .Options;
 
-            _context = new LMonitorDbContext(options);
+            _context = new LessonMonitorDbContext(options);
 
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -92,25 +92,6 @@ namespace LessonMonitor.DataAccess.MSSQL.XTests
 
             // assert
             Assert.NotNull(questionGetted);
-        }
-
-        [Fact]
-        public async Task Delete()
-        {
-            var fixture = new Fixture();
-            var question = fixture.Build<Core.CoreModels.Question>()
-                .Without(x => x.Id)
-                .Create();
-            question.MemberId = 1;
-
-            // act
-            var questionId = await _repository.Add(question);
-            var result = await _repository.Delete(questionId);
-            var questionGettedGetted = await _repository.Get(questionId);
-
-            // assert
-            Assert.True(result);
-            Assert.Null(questionGettedGetted);
         }
     }
 }

@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using LessonMonitor.Core;
+using LessonMonitor.Core.CoreModels;
 using LessonMonitor.Core.Exceptions;
 using LessonMonitor.Core.Repositories;
 using LessonMonitor.Core.Services;
@@ -46,6 +46,21 @@ namespace LessonMonitor.BusinessLogic
             await _homeworksRepository.Delete(homeworkId);
 
             return true;
+        }
+
+        public Task<Homework> Get(int homeworkId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Homework[]> Get()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> Update(Homework homework)
+        {
+            throw new NotImplementedException();
         }
     }
 }

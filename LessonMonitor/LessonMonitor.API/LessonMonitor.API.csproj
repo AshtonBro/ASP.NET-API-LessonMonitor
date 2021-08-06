@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LessonMonitor.BussinesLogic\LessonMonitor.BussinesLogic.csproj" />
     <ProjectReference Include="..\LessonMonitor.Core\LessonMonitor.Core.csproj" />
     <ProjectReference Include="..\LessonMonitor.DataAccess.MSSQL\LessonMonitor.DataAccess.MSSQL.csproj" />
     <PackageReference Include="AutoMapper" Version="10.1.1" />

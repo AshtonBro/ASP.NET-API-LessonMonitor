@@ -3,19 +3,17 @@ using System.Collections.Generic;
 
 namespace LessonMonitor.DataAccess.MSSQL.Entities
 {
-    public class Lesson
+    public class Lesson : BaseEntity
     {
-        public int Id { get; set; }
-
         public string Title { get; set; }
 
         public string Description { get; set; }
 
         public DateTime StartDate { get; set; }
 
-        public Homework Homework { get; set; }
-
         public string YouTubeBroadcastId { get; set; }
+
+        public ICollection<Homework> Homeworks { get; set; }
 
         public ICollection<VisitedLesson> VisitedLessons { get; set; }
     }

@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using FluentAssertions;
 using LessonMonitor.Core.CoreModels;
-using LessonMonitor.Core.Exceprions;
+using LessonMonitor.Core.Exceptions;
 using LessonMonitor.Core.Repositories;
 using Moq;
 using System;

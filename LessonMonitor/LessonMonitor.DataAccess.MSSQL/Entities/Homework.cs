@@ -2,7 +2,7 @@ using System;
 
 namespace LessonMonitor.DataAccess.MSSQL.Entities
 {
-    public class Homework
+    public class Homework : BaseEntity
     {
         public int LessonId { get; set; }
 

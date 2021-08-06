@@ -1,5 +1,5 @@
 using FluentValidation;
-using LessonMonitor.Core;
+using LessonMonitor.Core.CoreModels;
 
 namespace LessonMonitor.BusinessLogic.Validators
 {

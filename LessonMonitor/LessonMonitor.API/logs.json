@@ -3434,3 +3434,149 @@
     ]
   }
 },
+{
+  "ControllerName": "Members",
+  "ActionName": "GetHomeworks",
+  "Response": [
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/127",
+      "toBranchName": "homework/aspnet/12",
+      "fromBranchName": "homework/aspnet/12",
+      "isApproved": false
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/126",
+      "toBranchName": "homework/sql/11",
+      "fromBranchName": "homework/sql/11",
+      "isApproved": false
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/122",
+      "toBranchName": "homework/aspnet/11",
+      "fromBranchName": "homework/aspnet/11",
+      "isApproved": false
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/119",
+      "toBranchName": "homework/sql/10",
+      "fromBranchName": "homework/sql/10",
+      "isApproved": false
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/117",
+      "toBranchName": "homework/aspnet/10",
+      "fromBranchName": "homework/aspnet/10",
+      "isApproved": true
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/115",
+      "toBranchName": "homework/sql/9",
+      "fromBranchName": "homework/aspnet/9",
+      "isApproved": false
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/112",
+      "toBranchName": "homework/aspnet/8",
+      "fromBranchName": "homework/aspnet/8",
+      "isApproved": false
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/107",
+      "toBranchName": "homework/sql/7",
+      "fromBranchName": "homework/sql/7",
+      "isApproved": true
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/106",
+      "toBranchName": "main",
+      "fromBranchName": "homework/aspnet/7",
+      "isApproved": false
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/101",
+      "toBranchName": "homework/sql/6",
+      "fromBranchName": "homework/sql/6",
+      "isApproved": false
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/100",
+      "toBranchName": "homework/aspnet/6",
+      "fromBranchName": "homework/aspnet/6",
+      "isApproved": false
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/92",
+      "toBranchName": "homework/aspnet/4",
+      "fromBranchName": "homework/aspnet/5",
+      "isApproved": true
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/82",
+      "toBranchName": "homework/sql/4",
+      "fromBranchName": "homework/sql/4",
+      "isApproved": true
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/80",
+      "toBranchName": "homework/aspnet/4",
+      "fromBranchName": "homework/aspnet/4",
+      "isApproved": true
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/74",
+      "toBranchName": "homework/aspnet/3",
+      "fromBranchName": "homework/aspnet/3",
+      "isApproved": false
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/66",
+      "toBranchName": "homework/sql/3",
+      "fromBranchName": "homework/sql/3",
+      "isApproved": true
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/58",
+      "toBranchName": "homework/aspnet/2",
+      "fromBranchName": "homework/aspnet/2",
+      "isApproved": true
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/37",
+      "toBranchName": "homework/sql/2",
+      "fromBranchName": "homework/sql/2",
+      "isApproved": true
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/16",
+      "toBranchName": "homework/sql/1",
+      "fromBranchName": "homework/sql/1",
+      "isApproved": true
+    },
+    {
+      "memberId": 1,
+      "url": "https://github.com/cleannetcode/LessonMonitor/pull/9",
+      "toBranchName": "homework/1",
+      "fromBranchName": "homework/1",
+      "isApproved": true
+    }
+  ]
+},

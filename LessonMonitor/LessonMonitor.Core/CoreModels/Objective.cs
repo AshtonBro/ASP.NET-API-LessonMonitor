@@ -1,4 +1,4 @@
-﻿namespace LessonMonitor.Core
+﻿namespace LessonMonitor.Core.CoreModels
 {
     public class Objective
     {

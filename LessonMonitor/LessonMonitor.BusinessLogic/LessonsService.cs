@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using LessonMonitor.Core;
+using LessonMonitor.Core.CoreModels;
 using LessonMonitor.Core.Repositories;
 using LessonMonitor.Core.Services;
 

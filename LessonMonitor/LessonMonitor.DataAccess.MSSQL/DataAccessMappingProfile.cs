@@ -1,4 +1,5 @@
 using AutoMapper;
+using LessonMonitor.Core.CoreModels;
 
 namespace LessonMonitor.DataAccess.MSSQL
 {
@@ -6,13 +7,13 @@ namespace LessonMonitor.DataAccess.MSSQL
     {
         public DataAccessMappingProfile()
         {
-            CreateMap<Core.Member, Entities.Member>().ReverseMap();
-            CreateMap<Core.Lesson, Entities.Lesson>().ReverseMap();
+            CreateMap<Member, Entities.Member>().ReverseMap();
+            CreateMap<Lesson, Entities.Lesson>().ReverseMap();
 
-            CreateMap<Entities.Member, Core.MemberStatistic[]>()
+            CreateMap<Entities.Member, MemberStatistic[]>()
                 .ConvertUsing(new MemberStatisticConverter());
 
-            CreateMap<Entities.GithubAccount, Core.GitHubAccount>();
+            CreateMap<Entities.GithubAccount, GitHubAccount>();
         }
     }
 }

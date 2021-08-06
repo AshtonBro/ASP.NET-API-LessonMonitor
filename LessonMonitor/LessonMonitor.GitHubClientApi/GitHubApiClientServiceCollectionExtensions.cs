@@ -25,11 +25,14 @@ namespace LessonMonitor.GitHubClientApi
                 if (githubConfig.Repository == null)
                     throw new Exception($"Value \"{nameof(githubConfig.Repository)}\" of Section {GIT_HUB_OWNER_SECTION} doesn't confugured");
 
+                if (githubConfig.AuthToken == null)
+                    throw new Exception($"Value \"{nameof(githubConfig.AuthToken)}\" of Section {GIT_HUB_OWNER_SECTION} doesn't confugured");
+
                 var headerValue = new ProductHeaderValue(githubConfig.Owner);
 
                 var client = new GitHubClient(headerValue);
 
-                var tokenAuth = new Credentials("Insert a token here");
+                var tokenAuth = new Credentials(githubConfig.AuthToken);
 
                 client.Credentials = tokenAuth;
 

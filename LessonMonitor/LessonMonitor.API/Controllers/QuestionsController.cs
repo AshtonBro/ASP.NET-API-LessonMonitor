@@ -38,21 +38,6 @@ namespace LessonMonitor.API.Controllers
             }
         }
 
-        [HttpDelete]
-        public async Task<ActionResult> Delete(int questionId)
-        {
-            var result = await _questionsService.Delete(questionId);
-
-            if (result)
-            {
-                return Ok(new { Successful = $"Question is deleted: {result}" });
-            }
-            else
-            {
-                return NotFound(new { Error = "Question has already been deleted or not an invalid id" });
-            }
-        }
-
         [HttpGet("GetQuestionById")]
         public async Task<Question> Get(int questionId)
         {

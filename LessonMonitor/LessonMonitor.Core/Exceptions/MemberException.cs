@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LessonMonitor.Core.Exceprions
+namespace LessonMonitor.Core.Exceptions
 {
     public class MemberException : Exception
     {

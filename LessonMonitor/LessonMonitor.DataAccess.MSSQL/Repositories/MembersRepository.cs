@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LessonMonitor.Core;
+using LessonMonitor.Core.CoreModels;
 using LessonMonitor.Core.Exceptions;
 using LessonMonitor.Core.Repositories;
 using Microsoft.EntityFrameworkCore;

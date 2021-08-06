@@ -1,12 +1,12 @@
 using AutoFixture;
 using FluentAssertions;
-using LessonMonitor.Core.Exceprions;
 using LessonMonitor.Core.Repositories;
 using Moq;
 using System;
 using Xunit;
 using LessonMonitor.Core.CoreModels;
 using System.Threading.Tasks;
+using LessonMonitor.Core.Exceptions;
 
 namespace LessonMonitor.BussinesLogic.XTests
 {

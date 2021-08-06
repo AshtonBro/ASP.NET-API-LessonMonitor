@@ -15,7 +15,7 @@ namespace LessonMonitor.DataAccess.MSSQL.Configurations
             builder.Property(x => x.Link).HasMaxLength(1000);
 
             builder.HasOne(x => x.Lesson)
-                  .WithOne(x => x.Homework)
+                  .WithMany(x => x.Homeworks)
                   .OnDelete(DeleteBehavior.NoAction)
                   .IsRequired();
         }

@@ -4,6 +4,19 @@
         <name>LessonMonitor.API</name>
     </assembly>
     <members>
+        <member name="T:LessonMonitor.API.Attributes.CustomRequiredAttribute">
+            <summary>
+            Custom Required Attribute has the ability to display an error in several languages ​​RU and EN.
+            </summary>
+        </member>
+        <member name="M:LessonMonitor.API.Attributes.CustomRequiredAttribute.#ctor(System.Type,LessonMonitor.API.CustomErrors.ErrorMessageRegistry.Elang,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:LessonMonitor.API.Attributes.CustomRequiredAttribute"/> class.
+            </summary>
+            <param name="type">Model type.</param>
+            <param name="language">Error language.</param>
+            <param name="propertyName">Name property which need to validate.</param>
+        </member>
         <member name="T:LessonMonitor.API.Contracts.CreatedHomework">
             <summary>
             Model is used to created homework id.
@@ -12,6 +25,121 @@
         <member name="P:LessonMonitor.API.Contracts.CreatedHomework.HomeworkId">
             <summary>
             Created homework id.
+            </summary>
+        </member>
+        <member name="T:LessonMonitor.API.Contracts.CreatedLesson">
+            <summary>
+            Model is used to created Lesson id.
+            </summary>
+        </member>
+        <member name="P:LessonMonitor.API.Contracts.CreatedLesson.LessonId">
+            <summary>
+            Created Lesson id.
+            </summary>
+        </member>
+        <member name="T:LessonMonitor.API.Contracts.CreatedMember">
+            <summary>
+            Model is used to created Member id.
+            </summary>
+        </member>
+        <member name="P:LessonMonitor.API.Contracts.CreatedMember.MemberId">
+            <summary>
+            Created Member id.
+            </summary>
+        </member>
+        <member name="T:LessonMonitor.API.Contracts.CreatedQuestion">
+            <summary>
+            Model is used to created Question id.
+            </summary>
+        </member>
+        <member name="P:LessonMonitor.API.Contracts.CreatedQuestion.QuestionId">
+            <summary>
+            Created Question Id.
+            </summary>
+        </member>
+        <member name="T:LessonMonitor.API.Contracts.Homework">
+            <summary>
+            Homework model.
+            </summary>
+        </member>
+        <member name="P:LessonMonitor.API.Contracts.Homework.Id">
+            <summary>
+            Homework id.
+            </summary>
+        </member>
+        <member name="P:LessonMonitor.API.Contracts.Homework.Title">
+            <summary>
+            Homework topic.
+            </summary>
+        </member>
+        <member name="P:LessonMonitor.API.Contracts.Homework.Description">
+            <summary>
+            Description contains homework's context.
+            </summary>
+        </member>
+        <member name="P:LessonMonitor.API.Contracts.Homework.Link">
+            <summary>
+            Presumably a GitHub link.
+            </summary>
+        </member>
+        <member name="T:LessonMonitor.API.Contracts.HomeworksArray">
+            <summary>
+            Homework array model.
+            </summary>
+        </member>
+        <member name="P:LessonMonitor.API.Contracts.HomeworksArray.Homeworks">
+            <summary>
+            Contains homework array.
+            </summary>
+        </member>
+        <member name="T:LessonMonitor.API.Contracts.Lesson">
+            <summary>
+            Lesson model contains prop: Id, YouTubeBroadcastId, StartDate, Title, Description.
+            </summary>
+        </member>
+        <member name="P:LessonMonitor.API.Contracts.Lesson.Id">
+            <summary>
+            Lesson id.
+            </summary>
+        </member>
+        <member name="P:LessonMonitor.API.Contracts.Lesson.YouTubeBroadcastId">
+            <summary>
+            Id YouTube broadcast, we can assign after the end of the lesson.
+            </summary>
+        </member>
+        <member name="P:LessonMonitor.API.Contracts.Lesson.StartDate">
+            <summary>
+            Broadcast start date.
+            </summary>
+        </member>
+        <member name="P:LessonMonitor.API.Contracts.Lesson.Title">
+            <summary>
+            Lesson topic.
+            </summary>
+        </member>
+        <member name="P:LessonMonitor.API.Contracts.Lesson.Description">
+            <summary>
+            Description contains homework's context.
+            </summary>
+        </member>
+        <member name="T:LessonMonitor.API.Contracts.LessonsArray">
+            <summary>
+            Lesson array model.
+            </summary>
+        </member>
+        <member name="P:LessonMonitor.API.Contracts.LessonsArray.Lessons">
+            <summary>
+            Contains lesson array.
+            </summary>
+        </member>
+        <member name="T:LessonMonitor.API.Contracts.MembersArray">
+            <summary>
+            Member array model.
+            </summary>
+        </member>
+        <member name="P:LessonMonitor.API.Contracts.MembersArray.Members">
+            <summary>
+            Contains member array.
             </summary>
         </member>
         <member name="T:LessonMonitor.API.Contracts.NewHomework">
@@ -39,35 +167,15 @@
             Lesson to which the homework belongs.
             </summary>
         </member>
-        <member name="T:LessonMonitor.API.Contracts.WeatherForecast">
+        <member name="T:LessonMonitor.API.Contracts.QuestiosArray">
             <summary>
-            WeatherForecast
+            Question array model.
             </summary>
         </member>
-        <member name="P:LessonMonitor.API.Contracts.WeatherForecast.Date">
+        <member name="P:LessonMonitor.API.Contracts.QuestiosArray.Questions">
             <summary>
-            testse
+            Contains question array.
             </summary>
-        </member>
-        <member name="M:LessonMonitor.API.Controllers.HomeworksController.Create(LessonMonitor.API.Contracts.NewHomework)">
-             <summary>
-             Create new homework.
-             </summary>
-             <remarks>
-             Sample request:
-            
-                 POST / Homeworks
-                 {
-                    "Title": TestTitle,
-                    "Description": "TestDescription",
-                    "Link": "https://docs.microsoft.com/ru-ru/aspnet/core"
-                 }
-            
-             </remarks>
-             <param name="request">new homework model.</param>
-             <response code="200">Returns the newly created homework.</response>
-             <response code="400">If the homework is not validate.</response>
-             <returns>return homeworkId created model.</returns>
         </member>
     </members>
 </doc>

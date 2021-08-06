@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using LessonMonitor.Core;
+using LessonMonitor.Core.CoreModels;
 using LessonMonitor.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +20,6 @@ namespace LessonMonitor.DataAccess.MSSQL.Repositories
             if (newHomework is null)
                 throw new ArgumentNullException(nameof(newHomework));
 
-           
             var newHomeworkEntity = new Entities.Homework
             {
                 Title = newHomework.Title,

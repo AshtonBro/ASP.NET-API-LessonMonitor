@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using AutoFixture;
 using FluentAssertions;
-using LessonMonitor.Core;
+using LessonMonitor.Core.CoreModels;
 using LessonMonitor.Core.Repositories;
 using Moq;
 using Xunit;

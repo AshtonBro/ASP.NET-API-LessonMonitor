@@ -1,7 +1,6 @@
 using AutoFixture;
 using AutoMapper;
 using FluentAssertions;
-using LessonMonitor.Core;
 using LessonMonitor.Core.Repositories;
 using Moq;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using LessonMonitor.Core.CoreModels;
 
 namespace LessonMonitor.BusinessLogic.XTests
 {

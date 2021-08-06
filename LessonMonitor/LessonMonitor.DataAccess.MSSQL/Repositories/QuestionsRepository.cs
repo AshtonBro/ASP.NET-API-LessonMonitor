@@ -1,19 +1,17 @@
 ﻿using System;
 using LessonMonitor.Core.Repositories;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using System.Linq;
 using AutoMapper;
 
-namespace LessonMonitor.DataAccess.MSSQL.Repository
+namespace LessonMonitor.DataAccess.MSSQL.Repositories
 {
     public class QuestionsRepository : IQuestionsRepository
     {
-        private LMonitorDbContext _context;
+        private LessonMonitorDbContext _context;
         private readonly IMapper _mapper;
 
-        public QuestionsRepository(LMonitorDbContext context, IMapper mapper)
+        public QuestionsRepository(LessonMonitorDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -32,35 +30,12 @@ namespace LessonMonitor.DataAccess.MSSQL.Repository
             return newQuestionEntity.Id;
         }
 
-        public async Task<bool> Delete(int questionId)
-        {
-            if (questionId == default)
-                throw new ArgumentException(nameof(questionId));
-
-            var questionIdExist = await _context.Questions.SingleOrDefaultAsync(f => f.Id == questionId && f.DeletedDate == null);
-
-            if (questionIdExist != null)
-            {
-                questionIdExist.DeletedDate = DateTime.Now;
-
-                _context.Questions.Update(questionIdExist);
-
-                await _context.SaveChangesAsync();
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public async Task<Core.CoreModels.Question> Get(int questionId)
         {
             if (questionId == default)
                 throw new ArgumentException(nameof(questionId));
 
-            var questionExist = await _context.Questions.SingleOrDefaultAsync(f => f.Id == questionId && f.DeletedDate == null);
+            var questionExist = await _context.Questions.SingleOrDefaultAsync(f => f.Id == questionId);
 
             if (questionExist != null)
             {
@@ -75,7 +50,7 @@ namespace LessonMonitor.DataAccess.MSSQL.Repository
         public async Task<Core.CoreModels.Question[]> Get()
         {
 
-            var getQuestions = await _context.Questions.Where(f => f.DeletedDate == null).ToArrayAsync();
+            var getQuestions = await _context.Questions.ToArrayAsync();
 
             if (getQuestions.Length != 0 || getQuestions is null)
             {

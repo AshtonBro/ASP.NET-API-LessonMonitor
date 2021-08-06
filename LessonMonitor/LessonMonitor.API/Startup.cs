@@ -1,3 +1,5 @@
+using LessonMonitor.API.CustomErrors;
+using LessonMonitor.API.Middlewares;
 using LessonMonitor.BusinessLogic;
 using LessonMonitor.Core.Repositories;
 using LessonMonitor.Core.Services;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Net;
 
 namespace LessonMonitor.API
 {
@@ -25,6 +28,7 @@ namespace LessonMonitor.API
         }
 
         public IConfiguration Configuration { get; }
+
         public string[] AllKeys { get; }
 
         public void ConfigureServices(IServiceCollection services)
@@ -54,7 +58,6 @@ namespace LessonMonitor.API
 
             services.AddControllers();
 
-          
             services.AddAutoMapper(cfg =>
             {
                 //cfg.AddMaps(typeof(Startup).Assembly, typeof(LessonMonitorDbContext).Assembly);
@@ -64,9 +67,7 @@ namespace LessonMonitor.API
 
             });
 
-            //services.AddSingleton<IGitHubService, GitHubService>();
-            //services.AddSingleton<IGitHubRepository, GitHubRepository>();
-
+        
             services.AddScoped<IHomeworksService, HomeworksService>();
             services.AddScoped<IHomeworksRepository, HomeworksRepository>();
 
@@ -80,11 +81,6 @@ namespace LessonMonitor.API
             services.AddScoped<ILessonsRepository, LessonsRepository>();
 
             services.AddSingleton<IResponseBodyRepository, ResponseBodyRepository>();
-
-            services.AddDbContext<LMonitorDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("LessonMonitorDbMain"));
-            });
 
             services.AddSwaggerGen(c =>
             {

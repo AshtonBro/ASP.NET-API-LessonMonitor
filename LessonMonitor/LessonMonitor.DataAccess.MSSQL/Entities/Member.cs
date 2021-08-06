@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace LessonMonitor.DataAccess.MSSQL.Entities
 {
@@ -11,6 +12,8 @@ namespace LessonMonitor.DataAccess.MSSQL.Entities
         public string YouTubeUserId { get; set; }
 
         public GithubAccount GithubAccount { get; set; }
+
+        public DateTime UpdatedDate { get; set; }
 
         public ICollection<VisitedLesson> VisitedLessons { get; set; }
     }

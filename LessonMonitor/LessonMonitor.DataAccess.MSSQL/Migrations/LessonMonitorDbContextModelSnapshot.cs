@@ -42,15 +42,23 @@ namespace LessonMonitor.DataAccess.MSSQL.Migrations
 
             modelBuilder.Entity("LessonMonitor.DataAccess.MSSQL.Entities.Homework", b =>
                 {
-                    b.Property<int>("LessonId")
-                        .HasColumnType("int");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
-                    b.Property<bool>("Done")
-                        .HasColumnType("bit");
+                    b.Property<int>("LessonId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Link")
                         .HasMaxLength(1000)
@@ -61,7 +69,12 @@ namespace LessonMonitor.DataAccess.MSSQL.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.HasKey("LessonId");
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LessonId");
 
                     b.ToTable("Homeworks");
                 });
@@ -73,6 +86,12 @@ namespace LessonMonitor.DataAccess.MSSQL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
@@ -83,6 +102,9 @@ namespace LessonMonitor.DataAccess.MSSQL.Migrations
                     b.Property<string>("Title")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("YouTubeBroadcastId")
                         .HasMaxLength(200)
@@ -103,6 +125,9 @@ namespace LessonMonitor.DataAccess.MSSQL.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("YouTubeUserId")
                         .HasMaxLength(200)
@@ -200,8 +225,8 @@ namespace LessonMonitor.DataAccess.MSSQL.Migrations
             modelBuilder.Entity("LessonMonitor.DataAccess.MSSQL.Entities.Homework", b =>
                 {
                     b.HasOne("LessonMonitor.DataAccess.MSSQL.Entities.Lesson", "Lesson")
-                        .WithOne("Homework")
-                        .HasForeignKey("LessonMonitor.DataAccess.MSSQL.Entities.Homework", "LessonId")
+                        .WithMany("Homeworks")
+                        .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Lesson");
@@ -250,7 +275,7 @@ namespace LessonMonitor.DataAccess.MSSQL.Migrations
 
             modelBuilder.Entity("LessonMonitor.DataAccess.MSSQL.Entities.Lesson", b =>
                 {
-                    b.Navigation("Homework");
+                    b.Navigation("Homeworks");
 
                     b.Navigation("VisitedLessons");
                 });

@@ -63,17 +63,16 @@ namespace LessonMonitor.API
                 //cfg.AddMaps(typeof(Startup).Assembly, typeof(LessonMonitorDbContext).Assembly);
 
                 cfg.AddProfile<ApiMappingProfile>();
-                cfg.AddProfile<DataAccessMapperProfile>();
+                cfg.AddProfile<DataAccessMappingProfile>();
 
             });
 
-        
             services.AddScoped<IHomeworksService, HomeworksService>();
             services.AddScoped<IHomeworksRepository, HomeworksRepository>();
 
             services.AddTransient<IMembersService, MembersService>();
             services.AddTransient<IMembersRepository, MembersRepository>();
-            
+
             services.AddTransient<IQuestionsService, QuestionsService>();
             services.AddTransient<IQuestionsRepository, QuestionsRepository>();
 

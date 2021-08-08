@@ -21,14 +21,14 @@ namespace LessonMonitor.DataAccess.MSSQL.Repositories
             _mapper = mapper;
         }
 
-        public async Task<int> Add(Member newMember)
+        public async Task<int> Add(Core.Member newMember)
         {
             if (newMember is null)
             {
                 throw new ArgumentNullException(nameof(newMember));
             }
 
-            var newMemberEntity = _mapper.Map<Member, Entities.Member>(newMember);
+            var newMemberEntity = _mapper.Map<Core.Member, Entities.Member>(newMember);
 
             await _context.Members.AddAsync(newMemberEntity);
             await _context.SaveChangesAsync();
@@ -36,16 +36,16 @@ namespace LessonMonitor.DataAccess.MSSQL.Repositories
             return newMemberEntity.Id;
         }
 
-        public async Task<Member[]> Get()
+        public async Task<Core.Member[]> Get()
         {
             var members = await _context.Members
                 .AsNoTracking()
                 .ToArrayAsync();
 
-            return _mapper.Map<Entities.Member[], Member[]>(members);
+            return _mapper.Map<Entities.Member[], Core.Member[]>(members);
         }
 
-        public async Task<Member> Get(string youTubeUserId)
+        public async Task<Core.Member> Get(string youTubeUserId)
         {
             if (youTubeUserId is null)
             {
@@ -56,7 +56,7 @@ namespace LessonMonitor.DataAccess.MSSQL.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.YouTubeUserId == youTubeUserId);
 
-            return _mapper.Map<Entities.Member, Member>(member);
+            return _mapper.Map<Entities.Member, Core.Member>(member);
         }
 
         public async Task<MemberStatistic[]> GetStatistics(int memberId)
@@ -84,14 +84,14 @@ namespace LessonMonitor.DataAccess.MSSQL.Repositories
             return memberStatistics;
         }
 
-        public async Task Update(Member member)
+        public async Task Update(Core.Member member)
         {
             if (member is null)
             {
                 throw new ArgumentNullException(nameof(member));
             }
 
-            var memberEntity = _mapper.Map<Member, Entities.Member>(member);
+            var memberEntity = _mapper.Map<Core.Member, Entities.Member>(member);
 
             _context.Members.Update(memberEntity);
             await _context.SaveChangesAsync();

@@ -4,6 +4,7 @@ using LessonMonitor.Core.Services;
 using LessonMonitor.DataAccess.MSSQL;
 using LessonMonitor.DataAccess.MSSQL.Repositories;
 using LessonMonitor.GitHubClientApi;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,12 @@ namespace LessonMonitor.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(cfg =>
+            {
+                cfg.DefaultScheme = AuthenticationSchema.DEFAULT_SCHEMA;
+                cfg.AddScheme<MyAuthenticationHandler>(cfg.DefaultScheme, null);
+            });
+
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<ApiMappingProfile>();
@@ -74,6 +81,8 @@ namespace LessonMonitor.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

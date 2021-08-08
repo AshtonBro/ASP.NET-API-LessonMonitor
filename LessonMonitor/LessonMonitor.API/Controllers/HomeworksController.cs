@@ -2,6 +2,7 @@ using System.Net;
 using System.Threading.Tasks;
 using LessonMonitor.API.Contracts;
 using LessonMonitor.Core.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LessonMonitor.API.Controllers
@@ -60,6 +61,26 @@ namespace LessonMonitor.API.Controllers
             await _homeworksService.Delete(homeworkId);
 
             return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var userIdClaim = User.FindFirst(x => x.Type == "userId");
+
+            if (userIdClaim == null || User.Identity.IsAuthenticated == false)
+            {
+                return Forbid();
+            }
+
+            if (userIdClaim == null)
+            {
+                return Forbid();
+            }
+
+            var userId = userIdClaim.Value;
+
+            return Ok("Ok " + userId);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace LessonMonitor.DataAccess.MSSQL.Entities
 {
-    public class GitHubAccount
+    public class GithubAccount
     {
         public int MemberId { get; set; }
 
